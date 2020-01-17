@@ -175,6 +175,14 @@ $(libfesvr): $(fesvr_srcdir)
 	$(MAKE) -C $(fesvr_wrkdir) install
 	touch -c $@
 
+managementshim := $(spike_wrkdir)/magement.bin
+
+$(managementshim): $(spike_srcdir) $(spike)
+	cd $(spike_srcdir)/managementenclave
+	doit clean
+	doit
+	cp management.bin $(managementshim)
+
 $(spike): $(spike_srcdir) $(libfesvr)
 	rm -rf $(spike_wrkdir)
 	mkdir -p $(spike_wrkdir)
@@ -210,7 +218,7 @@ clean:
 	rm -rf -- $(wrkdir) $(toolchain_dest)
 
 .PHONY: sim
-sim: $(spike) $(bbl)
+sim: $(spike) $(managementshim) $(bbl)
 	$(spike) --isa=$(ISA) -p4 $(bbl)
 
 .PHONY: qemu
