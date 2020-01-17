@@ -175,13 +175,14 @@ $(libfesvr): $(fesvr_srcdir)
 	$(MAKE) -C $(fesvr_wrkdir) install
 	touch -c $@
 
-managementshim := $(spike_wrkdir)/magement.bin
+management_srcdir := $(spike_srcdir)/managementenclave
+managementshim := $(spike_wrkdir)/management.bin
 
-$(managementshim): $(spike_srcdir) $(spike)
-	cd $(spike_srcdir)/managementenclave
-	doit clean
-	doit
-	cp management.bin $(managementshim)
+$(managementshim): $(management_srcdir) $(spike)
+	cd $(management_srcdir)
+	doit clean -f $(management_srcdir)/dodo.py
+	doit -f $(management_srcdir)/dodo.py
+	cp $(management_srcdir)/management.bin $(managementshim)
 
 $(spike): $(spike_srcdir) $(libfesvr)
 	rm -rf $(spike_wrkdir)
