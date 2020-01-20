@@ -3,7 +3,7 @@
 	url = git@github.com:marnovandermaas/riscv-linux.git
 [submodule "buildroot"]
 	path = buildroot
-	url = https://github.com/sifive/buildroot.git
+	url = git@github.com:marnovandermaas/buildroot.git
 [submodule "riscv-pk"]
 	path = riscv-pk
 	url = https://github.com/riscv/riscv-pk.git
