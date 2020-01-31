@@ -19,3 +19,6 @@
 [submodule "riscv-qemu"]
 	path = riscv-qemu
 	url = git://github.com/riscv/riscv-qemu.git
+[submodule "praesidio-software"]
+	path = praesidio-software
+	url = git@github.com:marnovandermaas/praesidio-software.git
