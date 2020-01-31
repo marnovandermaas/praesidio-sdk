@@ -28,6 +28,6 @@ int main(void)
     enclave_memory_buffer[i] = 0;
   }
 
-  printf("%d\n", create_enclave((void*) enclave_memory_buffer));
+  printf("Got Enclave ID: %d\n", create_enclave((void*) enclave_memory_buffer));
   fclose(fp);
 }
