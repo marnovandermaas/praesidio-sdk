@@ -220,7 +220,7 @@ clean:
 
 .PHONY: sim
 sim: $(spike) $(managementshim) $(bbl)
-	$(spike) --isa=$(ISA) -p4 $(bbl)
+	$(spike) --isa=$(ISA) -p1 --enclave=1 $(bbl)
 
 .PHONY: qemu
 qemu: $(qemu) $(bbl) $(rootfs)
