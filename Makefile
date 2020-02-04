@@ -178,10 +178,11 @@ $(libfesvr): $(fesvr_srcdir)
 softwaredir := praesidio-software
 managementshim := $(spike_wrkdir)/management.bin
 
-$(managementshim): $(softwaredir) $(spike)
+$(managementshim): $(toolchain_dest)/bin/$(target)-gcc $(softwaredir) $(spike)
 	cd $(softwaredir)
 	doit clean -f $(softwaredir)/dodo.py
 	doit -f $(softwaredir)/dodo.py
+	cd ..
 
 $(spike): $(spike_srcdir) $(libfesvr)
 	rm -rf $(spike_wrkdir)
