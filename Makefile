@@ -45,10 +45,6 @@ spike_srcdir := $(srcdir)/riscv-isa-sim
 spike_wrkdir := $(wrkdir)/riscv-isa-sim
 spike := $(spike_wrkdir)/prefix/bin/spike
 
-qemu_srcdir := $(srcdir)/riscv-qemu
-qemu_wrkdir := $(wrkdir)/riscv-qemu
-qemu := $(qemu_wrkdir)/prefix/bin/qemu-system-riscv64
-
 rootfs := $(wrkdir)/rootfs.bin
 
 target := riscv64-unknown-linux-gnu
@@ -195,17 +191,6 @@ $(spike): $(spike_srcdir) $(libfesvr)
 	$(MAKE) -C $(spike_wrkdir) install
 	touch -c $@
 
-$(qemu): $(qemu_srcdir)
-	rm -rf $(qemu_wrkdir)
-	mkdir -p $(qemu_wrkdir)
-	mkdir -p $(dir $@)
-	cd $(qemu_wrkdir) && $</configure \
-		--prefix=$(dir $(abspath $(dir $@))) \
-		--target-list=riscv64-softmmu
-	$(MAKE) -C $(qemu_wrkdir)
-	$(MAKE) -C $(qemu_wrkdir) install
-	touch -c $@
-
 $(rootfs): $(buildroot_rootfs_ext)
 	cp $< $@
 
@@ -221,12 +206,6 @@ clean:
 .PHONY: sim
 sim: $(spike) $(managementshim) $(bbl)
 	$(spike) --isa=$(ISA) -p1 --enclave=1 $(bbl)
-
-.PHONY: qemu
-qemu: $(qemu) $(bbl) $(rootfs)
-	$(qemu) -nographic -machine virt -kernel $(bbl) \
-		-drive file=$(rootfs),format=raw,id=hd0 -device virtio-blk-device,drive=hd0 \
-		-netdev user,id=net0 -device virtio-net-device,netdev=net0
 
 # Relevant partition type codes
 BBL   = 2E54B353-1271-4842-806F-E436D6AF6985
