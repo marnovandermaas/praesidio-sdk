@@ -1,6 +1,6 @@
-# SiFive Freedom Unleashed SDK
+# Praesidio SDK
 
-This builds a complete RISC-V cross-compile toolchain for the SiFive Freedom Unleashed U500 SoC. It also builds a `bbl` image for booting the Freedom Unleashed development board.
+This builds a complete RISC-V cross-compile toolchain for Praesidio enclave system. It is based on the SiFive Freedom Unleashed SDK.
 
 ## Tested Configurations
 
