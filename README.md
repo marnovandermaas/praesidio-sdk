@@ -9,14 +9,19 @@ This builds a complete RISC-V cross-compile toolchain for Praesidio enclave syst
 
 ## Build Instructions
 
-Checkout this repository. Then you will need to checkout all of the linked submodules using:
+Checkout this repository. Then you need to checkout all of the linked submodules using:
 
 `git submodule update --recursive --init`
 
 This will take some time and require around 7 GiB of disk space.
 
-Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built. The completed build tree will consume about 14 GiB of disk space.
+Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while.
 
 ## Booting Linux on a simulator
 
-You can boot linux on Spike by running `make sim`. This will build the Spike simulator and run Linux on it.
+You can boot linux on Spike by running `make sim`. This will build the Spike simulator and Linux. Finally, it will run Linux on Spike. The completed build tree will consume about 13 GiB of disk space.
+
+## Using Linux
+To log in:
+- username: `root`
+- password: `sifive`
