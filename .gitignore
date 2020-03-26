@@ -1,4 +1,7 @@
 .*
 linux-*.tar.xz
 work/
-toolchain
+toolchain/
+arch/
+include/
+scripts/
