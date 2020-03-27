@@ -207,6 +207,12 @@ clean:
 sim: $(spike) $(managementshim) $(bbl)
 	$(spike) --isa=$(ISA) -p1 --enclave=1 $(bbl)
 
+sim_cache: $(spike) $(managementshim) $(bbl)
+	$(spike) --isa=$(ISA) -p1 --ic=512:4:8 --dc=512:4:8 --l2=4096:4:8 --l2_partitioning=0 --enclave=1 $(bbl)
+# caches specified with sets:ways:blocks
+# https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-optimization-manual.pdf Table 2-31
+# 32KiB IC and DC, 256KiB L2, 8MB L3, line size 64B
+
 # Relevant partition type codes
 BBL   = 2E54B353-1271-4842-806F-E436D6AF6985
 LINUX = 0FC63DAF-8483-4772-8E79-3D69D8477DE4
