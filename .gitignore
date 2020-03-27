@@ -5,3 +5,4 @@ toolchain/
 arch/
 include/
 scripts/
+*.log
