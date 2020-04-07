@@ -104,40 +104,46 @@ for idx, inst in enumerate(userInstructions[sendingRow:]):
 print("Sending message:    " + str(int(statistics.median(sendingInstructions))) + " instructions")
 print("Receiving message: " + str(int(statistics.median(receivingInstructions))) + " instructions")
 
-def makeStackBar(level, percentages, labels, colors):
-    if(len(percentages) != len(labels) or  len(percentages) != len(colors)):
+def makeStackBar(level, percentages, labels):
+    if(len(percentages) != len(labels)):
         print("Lengths must correspond for makeStackBar")
     cumm = 0
-    newLabels = []
     height = 1
-    for idx, label in enumerate(labels):
-        newLabels.append(label + "{:>2.2f}%".format(percentages[idx]))
     for idx, p in enumerate(percentages):
-        pyplot.barh(y=[level], width=[p], height=height, left=cumm, align='center', color=colors[idx])
-        r, g, b = matplotlib.colors.to_rgb(colors[idx])
-        textColor = 'w' if r * g * b < 0.5 else 'k'
+        if p < 20:
+            newLabel = labels[idx] + '\n'
+        else:
+            newLabel = labels[idx] + ' '
+        newLabel += "{:>2.2f}%".format(p)
+        if idx%2 != 0:
+            barColor = 'lightgray'
+            textColor = 'k'
+        else:
+            barColor = 'k'
+            textColor = 'w'
+        pyplot.barh(y=[level], width=[p], height=height, left=cumm, align='center', color=barColor)
         verticalAlignment = 'center'
         xCoord = cumm+p/2
         if(p < 5):
-            textColor = colors[idx]
-            #pyplot.plot([xCoord, xCoord], [level+height/2, level+height], color=textColor, linestyle='-')
+            textColor = 'k'
             pyplot.arrow(xCoord, level+height*3./4., 0, -height/4., color=textColor, head_width=1., head_length=.05, length_includes_head=True)
             level += height*3./4.
             verticalAlignment = 'bottom'
-        pyplot.text(xCoord, level, newLabels[idx], ha='center', va=verticalAlignment, color=textColor)
+        pyplot.text(xCoord, level, newLabel, ha='center', va=verticalAlignment, color=textColor)
         cumm += p
 
-ticks = [0]#[0,2,4]
-tickLabels = ['Instructions']#('Driver', 'Total', 'API + shim')
+ticks = [0,2]#[0,2,4]
+tickLabels = ['Instructions', 'Instructions']#('Driver', 'Total', 'API + shim')
 
 fig = pyplot.figure(figsize=(10,5))
 #makeStackBar(level=ticks[0], percentages=[20, 20, 20, 40], labels=['Context Switch', 'DMA Alloc', 'Copy from user', 'Other'], colors=['g', 'c', 'darkturquoise', 'b'], textRotation=['0', '0', '0', '0'])
-makeStackBar(level=ticks[0], percentages=createStats, labels=['User API\n', 'Kernel Driver ', 'Management Shim\n'], colors=['k', 'lightgray', 'k'])
+makeStackBar(level=ticks[0], percentages=createStats, labels=['User API', 'Kernel Driver', 'Management Shim'])
+makeStackBar(level=ticks[1], percentages=altCreateStats, labels=['User API', 'Kernel', 'Praesidio Driver +\nManagement Shim'])
 #makeStackBar(level=ticks[2], percentages=[95.30, 4.60], labels=['User API', 'Shim'], colors=['r', 'orange'], textRotation=['0', '90'])
 
 pyplot.grid(b=True, which='major', axis='x')
 pyplot.yticks(ticks, tickLabels)
-pyplot.ylim(-1, 1.5)
+pyplot.ylim(min(ticks)-1, max(ticks) + 1.5)
 pyplot.xlabel("Percentage of total")
 pyplot.xlim(-10, 110)
 
