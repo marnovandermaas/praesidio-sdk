@@ -6,8 +6,6 @@ import matplotlib
 import numpy
 import statistics
 
-#TODO put output stats around the whole create enclave driver thing to see how many instructions are lost in the context switch
-
 titles = []
 data = []
 
