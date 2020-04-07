@@ -122,14 +122,14 @@ def makeStackBar(level, percentages, labels, colors):
     for idx, p in enumerate(percentages):
         pyplot.barh(y=[level], width=[p], height=height, left=cumm, align='center', color=colors[idx])
         r, g, b = matplotlib.colors.to_rgb(colors[idx])
-        textColor = 'white' if r * g * b < 0.5 else 'darkgrey'
+        textColor = 'w' if r * g * b < 0.5 else 'k'
         verticalAlignment = 'center'
         xCoord = cumm+p/2
         if(p < 5):
             textColor = colors[idx]
             #pyplot.plot([xCoord, xCoord], [level+height/2, level+height], color=textColor, linestyle='-')
-            pyplot.arrow(xCoord, level+height, 0, -height/2, color=textColor, head_width=1., head_length=.05, length_includes_head=True)
-            level += height
+            pyplot.arrow(xCoord, level+height*3./4., 0, -height/4., color=textColor, head_width=1., head_length=.05, length_includes_head=True)
+            level += height*3./4.
             verticalAlignment = 'bottom'
         pyplot.text(xCoord, level, newLabels[idx], ha='center', va=verticalAlignment, color=textColor)
         cumm += p
@@ -139,12 +139,12 @@ tickLabels = ['Instructions']#('Driver', 'Total', 'API + shim')
 
 fig = pyplot.figure(figsize=(10,5))
 #makeStackBar(level=ticks[0], percentages=[20, 20, 20, 40], labels=['Context Switch', 'DMA Alloc', 'Copy from user', 'Other'], colors=['g', 'c', 'darkturquoise', 'b'], textRotation=['0', '0', '0', '0'])
-makeStackBar(level=ticks[0], percentages=createStats, labels=['User API\n', 'Kernel Driver ', 'Management Shim\n'], colors=['r', 'g', 'b'])
+makeStackBar(level=ticks[0], percentages=createStats, labels=['User API\n', 'Kernel Driver ', 'Management Shim\n'], colors=['k', 'lightgray', 'k'])
 #makeStackBar(level=ticks[2], percentages=[95.30, 4.60], labels=['User API', 'Shim'], colors=['r', 'orange'], textRotation=['0', '90'])
 
 pyplot.grid(b=True, which='major', axis='x')
 pyplot.yticks(ticks, tickLabels)
-pyplot.ylim(-1, 2)
+pyplot.ylim(-1, 1.5)
 pyplot.xlabel("Percentage of total")
 pyplot.xlim(-10, 110)
 
