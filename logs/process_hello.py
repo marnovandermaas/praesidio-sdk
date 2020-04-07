@@ -85,11 +85,13 @@ def reportStats(name, totalInst, userInst, kernelInst, shimInst):
     # pyplot.title(name)
     # pyplot.show()
 
-createEnclaveRow = 1
-sendingRow = createEnclaveRow+14
+createEnclaveRow = 0
+driverRow = createEnclaveRow + 1
+sendingRow = driverRow + 14
 receivingRow = sendingRow + 1
 
-createStats = reportStats("Create enclave", totalInstructions[createEnclaveRow]+totalInstructions[0], userInstructions[createEnclaveRow]+totalInstructions[0], kernelInstructions[createEnclaveRow], createEnclaveShimInstructions)
+createStats = reportStats("Create enclave", totalInstructions[createEnclaveRow], userInstructions[createEnclaveRow], kernelInstructions[createEnclaveRow], createEnclaveShimInstructions)
+altCreateStats = reportStats("Alternative create enclave", totalInstructions[createEnclaveRow], userInstructions[createEnclaveRow], kernelInstructions[createEnclaveRow], totalInstructions[driverRow])
 reportStats("Communication channel setup", totalInstructions[sendingRow] + totalInstructions[receivingRow], userInstructions[sendingRow] + userInstructions[receivingRow], kernelInstructions[sendingRow] + kernelInstructions[receivingRow], 0)
 
 sendingInstructions = []
