@@ -94,14 +94,16 @@ def reportStats(name, totalInst, userInst, kernelInst, shimInst):
     # pyplot.title(name)
     # pyplot.show()
 
+createEnclaveRow = 1
+sendingRow = createEnclaveRow+14
+receivingRow = sendingRow + 1
 
-
-createStats = reportStats("Create enclave", totalInstructions[0], userInstructions[0], kernelInstructions[0], createEnclaveShimInstructions)
-reportStats("Communication channel setup", totalInstructions[12] + totalInstructions[13], userInstructions[12] + userInstructions[13], kernelInstructions[12] + kernelInstructions[13], 0)
+createStats = reportStats("Create enclave", totalInstructions[createEnclaveRow]+totalInstructions[0], userInstructions[createEnclaveRow]+totalInstructions[0], kernelInstructions[createEnclaveRow], createEnclaveShimInstructions)
+reportStats("Communication channel setup", totalInstructions[sendingRow] + totalInstructions[receivingRow], userInstructions[sendingRow] + userInstructions[receivingRow], kernelInstructions[sendingRow] + kernelInstructions[receivingRow], 0)
 
 sendingInstructions = []
 receivingInstructions = []
-for idx, inst in enumerate(userInstructions[14:]):
+for idx, inst in enumerate(userInstructions[sendingRow:]):
     if(idx%2 == 0):
         sendingInstructions.append(inst)
     else:
