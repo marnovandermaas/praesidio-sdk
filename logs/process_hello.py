@@ -48,6 +48,7 @@ for num, row in enumerate(data):
         for idx in range(num+1, len(data)):
             if int(data[idx][labelIndex]) is currentLabel:
                 processedRows.append(idx)
+                #Instructions
                 tmpKernelInstructions = int(data[idx][kernelInstructionIndex]) - int(row[kernelInstructionIndex])
                 tmpTotalInstructions = int(data[idx][totalInstructionIndex]) - int(row[totalInstructionIndex])
                 userInstructions.append(tmpTotalInstructions - tmpKernelInstructions)
@@ -135,7 +136,7 @@ def makeStackBar(level, percentages, labels, colors):
         cumm += p
 
 ticks = [0]#[0,2,4]
-tickLabels = ('')#('Driver', 'Total', 'API + shim')
+tickLabels = ['Instructions']#('Driver', 'Total', 'API + shim')
 
 fig = pyplot.figure(figsize=(10,5))
 #makeStackBar(level=ticks[0], percentages=[20, 20, 20, 40], labels=['Context Switch', 'DMA Alloc', 'Copy from user', 'Other'], colors=['g', 'c', 'darkturquoise', 'b'], textRotation=['0', '0', '0', '0'])
@@ -145,6 +146,7 @@ makeStackBar(level=ticks[0], percentages=createStats, labels=['User API\n', 'Ker
 pyplot.grid(b=True, which='major', axis='x')
 pyplot.yticks(ticks, tickLabels)
 pyplot.ylim(-1, 2)
+pyplot.xlabel("Percentage of total")
 pyplot.xlim(-10, 110)
 
 pyplot.show()
