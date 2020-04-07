@@ -21,9 +21,6 @@ with open(sys.argv[1]) as csvDataFile:
         elif(num is not 1):
             data.append(row)
 
-print(titles)
-# print(data)
-
 labelIndex = 0
 totalInstructionIndex = 1
 kernelInstructionIndex = 2
@@ -51,10 +48,6 @@ for num, row in enumerate(data):
                 totalInstructions.append(tmpTotalInstructions)
                 break
 
-#print(labels)
-#print(userInstructions)
-#print(kernelInstructions)
-#print(processedRows)
 
 if((len(labels) != len(userInstructions)) or (len(labels) != len(kernelInstructions)) or (len(labels) != len(data)/2) or (len(processedRows) != len(data))):
     print("ERROR: Something went wrong when processing the data.")
