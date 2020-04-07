@@ -7,9 +7,6 @@ import numpy
 import statistics
 
 #TODO put output stats around the whole create enclave driver thing to see how many instructions are lost in the context switch
-#TODO put output stats around dma_alloc_coherent in create enclave
-#TODO put output stats around copy_from_user in create enclave
-#TODO put output stats around opening file, mallocing and copying in hello/user.c
 
 titles = []
 data = []
@@ -70,7 +67,7 @@ createEnclaveShimInstructions = 0
 
 for num, label in enumerate(labels):
     table.append([label, userInstructions[num], kernelInstructions[num], totalInstructions[num]])
-    if(label > 100):
+    if(label >= 100 and label < 200):
         if(kernelInstructions[num] != totalInstructions[num]):
             print("ERROR: something went wrong when processing create enclave.")
             sys.exit(-3)
