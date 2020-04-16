@@ -120,16 +120,6 @@ def reportStats(name, totalInst, userInst, kernelInst, setupInst, shimInst):
     if(shimInst != 0):
         print("{:>16.4f}% management shim".format(xVals[3]))
     return xVals
-    # for idx, x in enumerate(x_vals):
-    #     if x == 0:
-    #         x_vals[idx] = 0.001
-    # objects = ('User API', 'Kernel Driver', 'Management Shim')
-    # y_pos = numpy.arange(len(objects))
-    # pyplot.barh(y_pos, x_vals, align='center')
-    # pyplot.yticks(y_pos, objects)
-    # pyplot.xlabel("Percentage of total instructions")
-    # pyplot.title(name)
-    # pyplot.show()
 
 createEnclaveRow = 0
 preparePagesRow = 1
