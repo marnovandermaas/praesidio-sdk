@@ -134,6 +134,7 @@ if(int(labels[communicationSetupRow]) != 10):
     print("label mismatch on communication row")
     print(labels[communicationSetupRow])
     sys.exit(-6)
+firstSendingRow = communicationSetupRow + 3
 
 #createStats = reportStats(name="Create enclave", totalInst=totalInstructions[createEnclaveRow], userInst=userInstructions[createEnclaveRow], kernelInst=kernelInstructions[createEnclaveRow], setupInst=0, shimInst=createEnclaveShimInstructions)
 #altCreateStats = reportStats("Alternative create enclave", totalInstructions[createEnclaveRow], userInstructions[createEnclaveRow], kernelInstructions[createEnclaveRow], totalInstructions[driverRow])
@@ -150,13 +151,18 @@ print(createAccessesPercentages)
 
 sendingInstructions = []
 receivingInstructions = []
-for idx, inst in enumerate(userInstructions[communicationSetupRow:]):
+sendingAccesses = []
+receivingAccesses = []
+for idx, inst in enumerate(userInstructions[firstSendingRow:]):
     if(idx%2 == 0):
         sendingInstructions.append(inst)
+        sendingAccesses.append(l2CacheAccesses[firstSendingRow+idx])
     else:
         receivingInstructions.append(inst)
-print("Sending message:    " + str(int(statistics.median(sendingInstructions))) + " instructions")
-print("Receiving message: " + str(int(statistics.median(receivingInstructions))) + " instructions")
+        receivingAccesses.append(l2CacheAccesses[firstSendingRow+idx])
+
+print("Sending message:   {:>16} instructions {:>16.4} cache accesses".format(statistics.mean(sendingInstructions), statistics.mean(sendingAccesses)))
+print("Receiving message: {:>16} instructions {:>16.4} cache accesses".format(statistics.mean(receivingInstructions), statistics.mean(receivingAccesses)))
 
 def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
