@@ -24,11 +24,21 @@ with open(sys.argv[1]) as csvDataFile:
 labelIndex = 0
 totalInstructionIndex = 1
 kernelInstructionIndex = 2
+l2Index = -1
+for idx, n in enumerate(data[0]):
+    if n == " L2$":
+        l2Index = idx
+if l2Index < 0:
+    print("l2Index may not be negative")
+    sys.exit(-7)
+l2ReadsIndex = l2Index + 3
+l2WritesIndex = l2Index + 4
 
 labels = []
 userInstructions = []
 kernelInstructions = []
 totalInstructions = []
+l2CacheAccesses = []
 
 processedRows = []
 
@@ -48,6 +58,7 @@ for num, row in enumerate(data):
                 userInstructions.append(tmpTotalInstructions - tmpKernelInstructions)
                 kernelInstructions.append(tmpKernelInstructions)
                 totalInstructions.append(tmpTotalInstructions)
+                l2CacheAccesses.append(int(data[idx][l2ReadsIndex]) + int(data[idx][l2WritesIndex]) - int(row[l2ReadsIndex]) - int(row[l2WritesIndex]))
                 break
         if not found:
             print("Failed to find pair.")
@@ -68,19 +79,22 @@ if((len(labels) != len(userInstructions)) or (len(labels) != len(kernelInstructi
 table = []
 createEnclaveShimInstructions = 0
 setupLinuxDriverInstructions = 0
+createEnclaveShimAccesses = 0
+setupLinuxDriverAccesses = 0
 
 for num, label in enumerate(labels):
-    table.append([label, userInstructions[num], kernelInstructions[num], totalInstructions[num]])
+    table.append([label, userInstructions[num], kernelInstructions[num], totalInstructions[num], l2CacheAccesses[num]])
     if(label >= 100 and label < 200):
         if(kernelInstructions[num] != totalInstructions[num]):
             print("ERROR: something went wrong when processing create enclave.")
             sys.exit(-3)
         createEnclaveShimInstructions += kernelInstructions[num]
+        createEnclaveShimAccesses += l2CacheAccesses[num]
     if(label >= 1000 and label < 1100):
         setupLinuxDriverInstructions += totalInstructions[num]
+        setupLinuxDriverAccesses += l2CacheAccesses[num]
 
-print(setupLinuxDriverInstructions)
-print(tabulate.tabulate(table, headers=["label", "delta user inst.", "delta kernel inst.", "delta total inst."]))
+print(tabulate.tabulate(table, headers=["label", "user inst.", "kernel inst.", "total inst.", "L2 accesses"]))
 
 def percentify(list, total):
     percList = []
@@ -138,9 +152,11 @@ if(int(labels[communicationSetupRow]) != 10):
 # createLabels        = ['Setup\nEnclave\nPages', 'Create Enclave', 'Setup Driver', 'Management Shim']
 # createPercentages   = percentify([totalInstructions[preparePagesRow], (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions - createEnclaveShimInstructions), setupLinuxDriverInstructions, createEnclaveShimInstructions], totalInstructions[createEnclaveRow])
 createLabels        = ['Prepare\nEnclave\nPages', 'Setup Driver', 'Setup Enclave'] # Setup enclave includes setting up communication.
-createPercentages   = percentify([totalInstructions[preparePagesRow], setupLinuxDriverInstructions, (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions + totalInstructions[communicationSetupRow])], totalInstructions[createEnclaveRow])
+createInstructionsPercentages   = percentify([totalInstructions[preparePagesRow], setupLinuxDriverInstructions, (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions + totalInstructions[communicationSetupRow])], totalInstructions[createEnclaveRow])
+createAccessesPercentages   = percentify([l2CacheAccesses[preparePagesRow], setupLinuxDriverAccesses, (l2CacheAccesses[createEnclaveRow_exclusive] - setupLinuxDriverAccesses + l2CacheAccesses[communicationSetupRow])], l2CacheAccesses[createEnclaveRow])
 print(createLabels)
-print(createPercentages)
+print(createInstructionsPercentages)
+print(createAccessesPercentages)
 
 sendingInstructions = []
 receivingInstructions = []
@@ -181,13 +197,14 @@ def makeStackBar(level, percentages, labels):
         pyplot.text(xCoord, tmpLevel, newLabel, ha='center', va=verticalAlignment, color=textColor)
         cumm += p
 
-ticks = [0]#[0,2,4]
-tickLabels = ['{:,}\nInstructions'.format(totalInstructions[createEnclaveRow])]#('Driver', 'Total', 'API + shim')
+ticks = [0, 2]#[0,2,4]
+tickLabels = ['{:,}\nInstructions'.format(totalInstructions[createEnclaveRow]), '{:,}\nCache Accesses'.format(l2CacheAccesses[createEnclaveRow])]
 
 fig = pyplot.figure(figsize=(10,5))
 #makeStackBar(level=ticks[0], percentages=[20, 20, 20, 40], labels=['Context Switch', 'DMA Alloc', 'Copy from user', 'Other'], colors=['g', 'c', 'darkturquoise', 'b'], textRotation=['0', '0', '0', '0'])
 #makeStackBar(level=ticks[0], percentages=createStats, labels=['User API', 'Kernel Driver', 'Driver Setup' 'Management Shim'])
-makeStackBar(level = ticks[0], percentages=createPercentages, labels=createLabels)
+makeStackBar(level=ticks[0], percentages=createInstructionsPercentages, labels=createLabels)
+makeStackBar(level=ticks[1], percentages=createAccessesPercentages, labels=createLabels)
 #makeStackBar(level=ticks[1], percentages=altCreateStats, labels=['User API', 'Kernel', 'Praesidio Driver +\nManagement Shim'])
 #makeStackBar(level=ticks[2], percentages=[95.30, 4.60], labels=['User API', 'Shim'], colors=['r', 'orange'], textRotation=['0', '90'])
 
