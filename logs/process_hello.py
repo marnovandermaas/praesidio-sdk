@@ -142,7 +142,7 @@ firstSendingRow = communicationSetupRow + 3
 
 # createLabels        = ['Setup\nEnclave\nPages', 'Create Enclave', 'Setup Driver', 'Management Shim']
 # createPercentages   = percentify([totalInstructions[preparePagesRow], (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions - createEnclaveShimInstructions), setupLinuxDriverInstructions, createEnclaveShimInstructions], totalInstructions[createEnclaveRow])
-createLabels        = ['Prepare\nEnclave\nPages', 'Setup Driver', 'Setup Enclave'] # Setup enclave includes setting up communication.
+createLabels        = ['Prepare Enclave Pages', 'Setup Driver', 'Setup Enclave'] # Setup enclave includes setting up communication.
 createInstructionsPercentages   = percentify([totalInstructions[preparePagesRow], setupLinuxDriverInstructions, (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions + totalInstructions[communicationSetupRow])], totalInstructions[createEnclaveRow])
 createAccessesPercentages   = percentify([l2CacheAccesses[preparePagesRow], setupLinuxDriverAccesses, (l2CacheAccesses[createEnclaveRow_exclusive] - setupLinuxDriverAccesses + l2CacheAccesses[communicationSetupRow])], l2CacheAccesses[createEnclaveRow])
 print(createLabels)
@@ -168,7 +168,7 @@ def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
         print("Lengths must correspond for makeStackBar")
     cumm = 0
-    height = 1
+    fatness = 1
     for idx, p in enumerate(percentages):
         if p < 20:
             newLabel = labels[idx] + '\n'
@@ -181,22 +181,23 @@ def makeStackBar(level, percentages, labels):
         else:
             barColor = 'k'
             textColor = 'w'
-        pyplot.barh(y=[level], width=[p], height=height, left=cumm, align='center', color=barColor)
-        verticalAlignment = 'center'
-        xCoord = cumm+p/2
+        pyplot.bar(x=[level], height=[p], width=fatness, bottom=cumm, align='center', color=barColor)
+        textAlignment = 'center'
+        textSecondaryAlignment = 'center'
+        textPos = cumm+p/2
         tmpLevel = level
         if(p < 5):
             textColor = 'k'
-            pyplot.arrow(xCoord, level+height*3./4., 0, -height/4., color=textColor, head_width=1., head_length=.05, length_includes_head=True)
-            tmpLevel += height*3./4.
-            verticalAlignment = 'bottom'
-        pyplot.text(xCoord, tmpLevel, newLabel, ha='center', va=verticalAlignment, color=textColor)
+            pyplot.arrow(level+fatness*3./4., textPos, -fatness/4., 0, color=textColor, head_width=1., head_length=.05, length_includes_head=True)
+            tmpLevel += fatness*3./4.
+            textAlignment = 'left'
+        pyplot.text(tmpLevel, textPos, newLabel, ha=textAlignment, va=textSecondaryAlignment, color=textColor)
         cumm += p
 
 ticks = [0, 2]#[0,2,4]
 tickLabels = ['{:,}\nInstructions'.format(totalInstructions[createEnclaveRow]), '{:,}\nCache Accesses'.format(l2CacheAccesses[createEnclaveRow])]
 
-fig = pyplot.figure(figsize=(10,5))
+fig = pyplot.figure(figsize=(11,7))
 #makeStackBar(level=ticks[0], percentages=[20, 20, 20, 40], labels=['Context Switch', 'DMA Alloc', 'Copy from user', 'Other'], colors=['g', 'c', 'darkturquoise', 'b'], textRotation=['0', '0', '0', '0'])
 #makeStackBar(level=ticks[0], percentages=createStats, labels=['User API', 'Kernel Driver', 'Driver Setup' 'Management Shim'])
 makeStackBar(level=ticks[0], percentages=createInstructionsPercentages, labels=createLabels)
@@ -204,11 +205,11 @@ makeStackBar(level=ticks[1], percentages=createAccessesPercentages, labels=creat
 #makeStackBar(level=ticks[1], percentages=altCreateStats, labels=['User API', 'Kernel', 'Praesidio Driver +\nManagement Shim'])
 #makeStackBar(level=ticks[2], percentages=[95.30, 4.60], labels=['User API', 'Shim'], colors=['r', 'orange'], textRotation=['0', '90'])
 
-pyplot.grid(b=True, which='major', axis='x')
-pyplot.yticks(ticks, tickLabels)
-pyplot.ylim(min(ticks)-1, max(ticks) + 1.5)
-pyplot.xlabel("Percentage of total")
-pyplot.xlim(-10, 110)
+pyplot.grid(b=True, which='major', axis='y', c='lightgray')
+pyplot.xticks(ticks, tickLabels)
+pyplot.xlim(min(ticks)-1, max(ticks) + 2)
+pyplot.ylabel("Percentage of total")
+pyplot.ylim(-10, 110)
 pyplot.title("Cost to Create Enclave")
 
 pyplot.show()
