@@ -123,24 +123,28 @@ createEnclaveRow_exclusive = 2
 driverRow = createEnclaveRow + 5
 if(int(labels[driverRow]) != 201):
     print("Label mismatch on driver row")
+    print(label[driverRow])
     sys.exit(-5)
-sendingRow = driverRow + 14
-receivingRow = sendingRow + 1
+communicationSetupRow = driverRow + 14
+if(int(labels[communicationSetupRow]) != 10):
+    print("label mismatch on communication row")
+    print(labels[communicationSetupRow])
+    sys.exit(-6)
 
-createStats = reportStats(name="Create enclave", totalInst=totalInstructions[createEnclaveRow], userInst=userInstructions[createEnclaveRow], kernelInst=kernelInstructions[createEnclaveRow], setupInst=setupLinuxDriverInstructions, shimInst=createEnclaveShimInstructions)
+#createStats = reportStats(name="Create enclave", totalInst=totalInstructions[createEnclaveRow], userInst=userInstructions[createEnclaveRow], kernelInst=kernelInstructions[createEnclaveRow], setupInst=0, shimInst=createEnclaveShimInstructions)
 #altCreateStats = reportStats("Alternative create enclave", totalInstructions[createEnclaveRow], userInstructions[createEnclaveRow], kernelInstructions[createEnclaveRow], totalInstructions[driverRow])
-reportStats("Communication channel setup", totalInstructions[sendingRow] + totalInstructions[receivingRow], userInstructions[sendingRow] + userInstructions[receivingRow], kernelInstructions[sendingRow] + kernelInstructions[receivingRow], 0, 0)
+#reportStats("Communication channel setup", totalInstructions[sendingRow] + totalInstructions[receivingRow], userInstructions[sendingRow] + userInstructions[receivingRow], kernelInstructions[sendingRow] + kernelInstructions[receivingRow], 0, 0)
 
 # createLabels        = ['Setup\nEnclave\nPages', 'Create Enclave', 'Setup Driver', 'Management Shim']
 # createPercentages   = percentify([totalInstructions[preparePagesRow], (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions - createEnclaveShimInstructions), setupLinuxDriverInstructions, createEnclaveShimInstructions], totalInstructions[createEnclaveRow])
-createLabels        = ['Setup\nEnclave\nPages', 'Setup Driver', 'Management Shim']
-createPercentages   = percentify([totalInstructions[preparePagesRow], setupLinuxDriverInstructions, (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions)], totalInstructions[createEnclaveRow])
+createLabels        = ['Prepare\nEnclave\nPages', 'Setup Driver', 'Setup Enclave'] # Setup enclave includes setting up communication.
+createPercentages   = percentify([totalInstructions[preparePagesRow], setupLinuxDriverInstructions, (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions + totalInstructions[communicationSetupRow])], totalInstructions[createEnclaveRow])
 print(createLabels)
 print(createPercentages)
 
 sendingInstructions = []
 receivingInstructions = []
-for idx, inst in enumerate(userInstructions[sendingRow:]):
+for idx, inst in enumerate(userInstructions[communicationSetupRow:]):
     if(idx%2 == 0):
         sendingInstructions.append(inst)
     else:
