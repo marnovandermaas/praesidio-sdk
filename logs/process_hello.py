@@ -10,11 +10,20 @@ if(len(sys.argv) < 2):
     print("ERROR: Please give one or more file names of log files as input to this python script.")
     sys.exit(-1)
 
+def getMeanAndDeviation(list):
+    myMean = statistics.mean(list)
+    deltaFromMax = max(list) - myMean
+    deltaFromMin = myMean - min(list)
+    if(deltaFromMax > deltaFromMin):
+        return (myMean, deltaFromMax)
+    return (myMean, deltaFromMin)
+
+
 def percentify(matrix, total):
     percTupleList = []
     for i, l in enumerate(matrix):
         percList = [p*100.0/t for (p,t) in zip(l, total)]
-        percTupleList.append((statistics.mean(perList), statistics.stdev(percList)))
+        percTupleList.append(getMeanAndDeviation(percList))
     return percTupleList
 
 #Definition of row numbers:
@@ -190,8 +199,8 @@ def makeStackBar(level, percentages, labels):
 # createLabels        = ['Setup\nEnclave\nPages', 'Create Enclave', 'Setup Driver', 'Management Shim']
 # createPercentages   = percentify([totalInstructions[preparePagesRow], (totalInstructions[createEnclaveRow_exclusive] - setupLinuxDriverInstructions - createEnclaveShimInstructions), setupLinuxDriverInstructions, createEnclaveShimInstructions], totalInstructions[createEnclaveRow])
 createLabels        = ['Prepare Enclave Pages', 'Setup Driver', 'Setup Enclave'] # Setup enclave includes setting up communication.
-createInstructionsPercentages   = percentify([totalInstructionMatrix[preparePagesRow], setupLinuxDriverInstructionList, [total - setup + comm for (total, setup, comm) in zip (totalInstructionMatrix[createEnclaveRow_exclusive], setupLinuxDriverInstructionList, totalInstructionMatrix[communicationSetupRow])]], totalInstructionList[createEnclaveRow])
-createAccessesPercentages   = percentify([l2CacheAccessMatrix[preparePagesRow], setupLinuxDriverAccessList, [total - setup + comm for (total, setup, comm) in zip (l2CacheAccessMatrix[createEnclaveRow_exclusive], setupLinuxDriverAccessList, l2CacheAccessMatrix[communicationSetupRow])]], l2CacheAccessList[createEnclaveRow])
+createInstructionsPercentages   = percentify([totalInstructionMatrix[preparePagesRow], setupLinuxDriverInstructionList, [total - setup + comm for (total, setup, comm) in zip (totalInstructionMatrix[createEnclaveRow_exclusive], setupLinuxDriverInstructionList, totalInstructionMatrix[communicationSetupRow])]], totalInstructionMatrix[createEnclaveRow])
+createAccessesPercentages   = percentify([l2CacheAccessMatrix[preparePagesRow], setupLinuxDriverAccessList, [total - setup + comm for (total, setup, comm) in zip (l2CacheAccessMatrix[createEnclaveRow_exclusive], setupLinuxDriverAccessList, l2CacheAccessMatrix[communicationSetupRow])]], l2CacheAccessMatrix[createEnclaveRow])
 print(createLabels)
 print(createInstructionsPercentages)
 print(createAccessesPercentages)
