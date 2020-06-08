@@ -13,11 +13,12 @@ Checkout this repository. Then you need to checkout all of the linked submodules
 
 `git submodule update --recursive --init`
 
-This will take some time and require around 7 GiB of disk space. At the moment the submodule update might skip the `riscv-gnu-toolchain` if this is the case for you please execute the following command:
+This will take some time and require around 7 GiB of disk space. At the moment the submodule update might skip the `riscv-gnu-toolchain` if this is the case for you please execute the following commands:
 
 ```
-git clone git@github.com:marnovandermaas/riscv-gnu-toolchain.git
+git clone https://github.com/riscv/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
+git checkout b4dae89f85bf882852c6186b1284df11065bfcd9
 git submodule update --recursive --init
 cd ..
 ```
