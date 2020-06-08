@@ -13,7 +13,14 @@ Checkout this repository. Then you need to checkout all of the linked submodules
 
 `git submodule update --recursive --init`
 
-This will take some time and require around 7 GiB of disk space.
+This will take some time and require around 7 GiB of disk space. At the moment the submodule update might skip the `riscv-gnu-toolchain` if this is the case for you please execute the following command:
+
+```
+git clone git@github.com:marnovandermaas/riscv-gnu-toolchain.git
+cd riscv-gnu-toolchain
+git submodule update --recursive --init
+cd ..
+```
 
 Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while.
 
