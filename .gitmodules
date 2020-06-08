@@ -7,9 +7,6 @@
 [submodule "riscv-pk"]
 	path = riscv-pk
 	url = https://github.com/riscv/riscv-pk.git
-[submodule "riscv-gnu-toolchain"]
-	path = riscv-gnu-toolchain
-	url = git@github.com:marnovandermaas/riscv-gnu-toolchain.git
 [submodule "riscv-isa-sim"]
 	path = riscv-isa-sim
 	url = git@github.com:marnovandermaas/riscv-isa-sim.git
@@ -19,3 +16,6 @@
 [submodule "praesidio-software"]
 	path = praesidio-software
 	url = git@github.com:marnovandermaas/praesidio-software.git
+[submodule "riscv-gnu-toolchain"]
+	path = riscv-gnu-toolchain
+	url = https://github.com/riscv/riscv-gnu-toolchain.git
