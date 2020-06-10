@@ -81,7 +81,6 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
     data = []
     labels = []
     processedRows = []
-    table = [] # only used for pretty printing
 
     with open(fileName) as csvDataFile:
         csvReader = csv.reader(csvDataFile)
@@ -148,6 +147,7 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
       createEnclaveShimInstructionList.append(0)
       setupLinuxDriverAccessList.append(0)
       setupLinuxDriverInstructionList.append(0)
+      table = [] # only used for pretty printing
       for num, label in enumerate(labels):
           table.append([label, userInstructionMatrix[num][fileNumber], kernelInstructionMatrix[num][fileNumber], totalInstructionMatrix[num][fileNumber], l2CacheAccessMatrix[num][fileNumber]])
           if(label >= 100 and label < 200):
@@ -181,10 +181,18 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
               hello_receivingAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
     elif(ring_status):
       for idx in range(ring_firstSendingRow, len(userInstructionMatrix)):
+        if( labels[idx] not in ring_sendingInstructions.keys() ):
+          ring_sendingInstructions[labels[idx]] = []
+          ring_receivingInstructions[labels[idx]] = []
+          ring_sendingAccesses[labels[idx]] = []
+          ring_receivingAccesses[labels[idx]] = []
         if((idx-ring_firstSendingRow) % 2 == 0):
-          None
+          ring_sendingInstructions[labels[idx]].append(userInstructionMatrix[idx][fileNumber])
+          ring_sendingAccesses[labels[idx]].append(l2CacheAccessMatrix[idx][fileNumber])
         else:
-          None
+          ring_receivingInstructions[labels[idx]].append(userInstructionMatrix[idx][fileNumber])
+          ring_receivingAccesses[labels[idx]].append(l2CacheAccessMatrix[idx][fileNumber])
+      print(ring_sendingInstructions)
 
 def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
