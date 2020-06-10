@@ -192,7 +192,7 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
         else:
           ring_receivingInstructions[labels[idx]].append(userInstructionMatrix[idx][fileNumber])
           ring_receivingAccesses[labels[idx]].append(l2CacheAccessMatrix[idx][fileNumber])
-      print(ring_sendingInstructions)
+      #print(ring_sendingInstructions)
 
 def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
@@ -258,4 +258,56 @@ if hello_status:
 
   pyplot.show()
 elif ring_status:
-  None
+    packetSizes = []
+    txInstMeans = []
+    rxInstMeans = []
+    txInstDevs  = []
+    rxInstDevs  = []
+    txAccessMeans = []
+    rxAccessMeans = []
+    txAccessDevs = []
+    rxAccessDevs = []
+    for size in ring_sendingInstructions.keys():
+        packetSizes.append(  size)
+        txInstMeans.append(  statistics.mean( ring_sendingInstructions  [size]))
+        rxInstMeans.append(  statistics.mean( ring_receivingInstructions[size]))
+        txInstDevs.append(   statistics.stdev(ring_sendingInstructions  [size]))
+        rxInstDevs.append(   statistics.stdev(ring_receivingInstructions[size]))
+        txAccessMeans.append(statistics.mean( ring_sendingAccesses      [size]))
+        rxAccessMeans.append(statistics.mean( ring_receivingAccesses    [size]))
+        txAccessDevs.append( statistics.stdev(ring_sendingAccesses      [size]))
+        rxAccessDevs.append( statistics.stdev(ring_receivingAccesses    [size]))
+    #print(packetSizes)
+    #print(txInstMeans)
+    #print(rxInstMeans)
+    #print(txInstDevs)
+    #print(rxInstDevs)
+    #print(txAccessMeans)
+    #print(rxAccessMeans)
+    #print(txAccessDevs)
+    #print(rxAccessDevs)
+    fig = pyplot.figure(figsize=(11,7))
+
+    backwardLineWidth = 4
+    ax1 = fig.add_subplot(2,1,1)
+    ax1.set_xscale('log')
+    ax1.set_yscale('log')
+    (_, caps11, _) = ax1.errorbar(x=packetSizes, y=txInstMeans, yerr=txInstDevs, elinewidth=backwardLineWidth, linewidth=backwardLineWidth)
+    (_, caps12, _) = ax1.errorbar(x=packetSizes, y=rxInstMeans, yerr=rxInstDevs)
+    ax1.set_ylabel("Instructions")
+    ax1.set_title("Costs for sending and receiving messages.")
+    ax1.legend(["Send", "Receive"])
+
+    ax2 = fig.add_subplot(2,1,2)
+    ax2.set_xscale('log')
+    (_, caps21, _) = ax2.errorbar(x=packetSizes, y=txAccessMeans, yerr=txAccessDevs, elinewidth=backwardLineWidth, linewidth=backwardLineWidth)
+    (_, caps22, _) = ax2.errorbar(x=packetSizes, y=rxAccessMeans, yerr=rxAccessDevs)
+    ax2.set_ylabel("Cache Accesses")
+    ax2.set_title("Costs for sending and receiving messages.")
+    ax2.legend(["Send", "Receive"])
+
+    for caplist in [caps11, caps12, caps21, caps22]:
+        for cap in caplist:
+            cap.set_markeredgewidth(100)
+
+    pyplot.show()
