@@ -26,7 +26,7 @@ def percentify(matrix, total):
         percTupleList.append(getMeanAndDeviation(percList))
     return percTupleList
 
-#Definition of row numbers for hello:
+#Definition of row numbers for hello benchmark:
 hello_createEnclaveRow = 0
 hello_preparePagesRow = 1
 hello_createEnclaveRow_exclusive = 2
@@ -34,15 +34,25 @@ hello_driverRow = hello_createEnclaveRow + 5
 hello_communicationSetupRow = hello_driverRow + 14
 hello_firstSendingRow = hello_communicationSetupRow + 3
 
+#Definition of row numbers for ring benchmark:
+ring_firstSendingRow = 32
+
 #Definition of indeces within rows:
 labelIndex = 0
 totalInstructionIndex = 1
 kernelInstructionIndex = 2
 
-sendingInstructions = []
-receivingInstructions = []
-sendingAccesses = []
-receivingAccesses = []
+#Lists for sending and receiving performance in hello benchmark
+hello_sendingInstructions = []
+hello_receivingInstructions = []
+hello_sendingAccesses = []
+hello_receivingAccesses = []
+
+#Dicts for sending and receiving performance in ring benchmark
+ring_sendingInstructions = {}
+ring_receivingInstructions = {}
+ring_sendingAccesses = {}
+ring_receivingAccesses = {}
 
 #Matrices and lists used for final results
 userInstructionMatrix = []
@@ -163,14 +173,18 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
           sys.exit(-6)
 
       for idx in range(hello_firstSendingRow, len(userInstructionMatrix)):
-          if((idx-hello_firstSendingRow)%2 == 0):
-              sendingInstructions.append(userInstructionMatrix[idx][fileNumber])
-              sendingAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
+          if((idx-hello_firstSendingRow) % 2 == 0):
+              hello_sendingInstructions.append(userInstructionMatrix[idx][fileNumber])
+              hello_sendingAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
           else:
-              receivingInstructions.append(userInstructionMatrix[idx][fileNumber])
-              receivingAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
+              hello_receivingInstructions.append(userInstructionMatrix[idx][fileNumber])
+              hello_receivingAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
     elif(ring_status):
-      None
+      for idx in range(ring_firstSendingRow, len(userInstructionMatrix)):
+        if((idx-ring_firstSendingRow) % 2 == 0):
+          None
+        else:
+          None
 
 def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
@@ -203,8 +217,8 @@ def makeStackBar(level, percentages, labels):
         cumm += p
 
 if hello_status:
-  print("Sending message:   {:>16d}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(sendingInstructions), statistics.stdev(sendingInstructions), statistics.mean(sendingAccesses), statistics.stdev(sendingAccesses)))
-  print("Receiving message: {:>16d}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(receivingInstructions), statistics.stdev(receivingInstructions), statistics.mean(receivingAccesses), statistics.stdev(receivingAccesses)))
+  print("Sending message:   {:>16d}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(hello_sendingInstructions), statistics.stdev(hello_sendingInstructions), statistics.mean(hello_sendingAccesses), statistics.stdev(hello_sendingAccesses)))
+  print("Receiving message: {:>16d}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(hello_receivingInstructions), statistics.stdev(hello_receivingInstructions), statistics.mean(hello_receivingAccesses), statistics.stdev(hello_receivingAccesses)))
 
   createLabels        = ['Prepare Enclave Pages', 'Setup Driver', 'Setup Enclave'] # Setup enclave includes setting up communication.
   createInstructionsPercentages   = percentify([totalInstructionMatrix[hello_preparePagesRow], setupLinuxDriverInstructionList, [total - setup + comm for (total, setup, comm) in zip (totalInstructionMatrix[hello_createEnclaveRow_exclusive], setupLinuxDriverInstructionList, totalInstructionMatrix[hello_communicationSetupRow])]], totalInstructionMatrix[hello_createEnclaveRow])
