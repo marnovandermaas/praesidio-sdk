@@ -261,22 +261,31 @@ elif ring_status:
     packetSizes = []
     txInstMeans = []
     rxInstMeans = []
-    txInstDevs  = []
-    rxInstDevs  = []
+    txInstDevs  = ([], [])
+    rxInstDevs  = ([], [])
     txAccessMeans = []
     rxAccessMeans = []
-    txAccessDevs = []
-    rxAccessDevs = []
+    txAccessDevs = ([], [])
+    rxAccessDevs = ([], [])
     for size in ring_sendingInstructions.keys():
-        packetSizes.append(  size)
-        txInstMeans.append(  statistics.mean( ring_sendingInstructions  [size]))
-        rxInstMeans.append(  statistics.mean( ring_receivingInstructions[size]))
-        txInstDevs.append(   statistics.stdev(ring_sendingInstructions  [size]))
-        rxInstDevs.append(   statistics.stdev(ring_receivingInstructions[size]))
-        txAccessMeans.append(statistics.mean( ring_sendingAccesses      [size]))
-        rxAccessMeans.append(statistics.mean( ring_receivingAccesses    [size]))
-        txAccessDevs.append( statistics.stdev(ring_sendingAccesses      [size]))
-        rxAccessDevs.append( statistics.stdev(ring_receivingAccesses    [size]))
+        packetSizes.append(size)
+        txInstQuantiles = numpy.percentile(ring_sendingInstructions[size], [25,50,75])
+        rxInstQuantiles = numpy.percentile(ring_receivingInstructions[size], [25,50,75])
+        txInstMeans.append( txInstQuantiles[1] )
+        rxInstMeans.append( rxInstQuantiles[1] )
+        txInstDevs[0].append( txInstQuantiles[1] - txInstQuantiles[0])
+        txInstDevs[1].append( txInstQuantiles[2] - txInstQuantiles[1])
+        rxInstDevs[0].append( rxInstQuantiles[1] - rxInstQuantiles[0])
+        rxInstDevs[1].append( rxInstQuantiles[2] - rxInstQuantiles[1])
+
+        txAccessQuantiles = numpy.percentile(ring_sendingAccesses[size], [25,50,75])
+        rxAccessQuantiles = numpy.percentile(ring_receivingAccesses[size], [25,50,75])
+        txAccessMeans.append(txAccessQuantiles[1])
+        rxAccessMeans.append(rxAccessQuantiles[1])
+        txAccessDevs[0].append( txAccessQuantiles[1] - txAccessQuantiles[0])
+        txAccessDevs[1].append( txAccessQuantiles[2] - txAccessQuantiles[1])
+        rxAccessDevs[0].append( rxAccessQuantiles[1] - rxAccessQuantiles[0])
+        rxAccessDevs[1].append( rxAccessQuantiles[2] - rxAccessQuantiles[1])
     #print(packetSizes)
     #print(txInstMeans)
     #print(rxInstMeans)
@@ -288,26 +297,23 @@ elif ring_status:
     #print(rxAccessDevs)
     fig = pyplot.figure(figsize=(11,7))
 
-    backwardLineWidth = 4
+    capsize=5
+    markeredgewidth=1
     ax1 = fig.add_subplot(2,1,1)
-    ax1.set_xscale('log')
+    ax1.set_xscale('log', basex=2)
     ax1.set_yscale('log')
-    (_, caps11, _) = ax1.errorbar(x=packetSizes, y=txInstMeans, yerr=txInstDevs, elinewidth=backwardLineWidth, linewidth=backwardLineWidth)
-    (_, caps12, _) = ax1.errorbar(x=packetSizes, y=rxInstMeans, yerr=rxInstDevs)
+    ax1.errorbar(x=packetSizes, y=txInstMeans, yerr=txInstDevs, capsize=capsize, markeredgewidth=markeredgewidth)
+    ax1.errorbar(x=packetSizes, y=rxInstMeans, yerr=rxInstDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax1.set_ylabel("Instructions")
-    ax1.set_title("Costs for sending and receiving messages.")
+    #ax1.set_title("Costs for sending and receiving messages.")
     ax1.legend(["Send", "Receive"])
 
     ax2 = fig.add_subplot(2,1,2)
-    ax2.set_xscale('log')
-    (_, caps21, _) = ax2.errorbar(x=packetSizes, y=txAccessMeans, yerr=txAccessDevs, elinewidth=backwardLineWidth, linewidth=backwardLineWidth)
-    (_, caps22, _) = ax2.errorbar(x=packetSizes, y=rxAccessMeans, yerr=rxAccessDevs)
+    ax2.set_xscale('log', basex=2)
+    ax2.errorbar(x=packetSizes, y=txAccessMeans, yerr=txAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth)
+    ax2.errorbar(x=packetSizes, y=rxAccessMeans, yerr=rxAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax2.set_ylabel("Cache Accesses")
-    ax2.set_title("Costs for sending and receiving messages.")
+    ax2.set_xlabel("Packet Size in Bytes")
     ax2.legend(["Send", "Receive"])
-
-    for caplist in [caps11, caps12, caps21, caps22]:
-        for cap in caplist:
-            cap.set_markeredgewidth(100)
 
     pyplot.show()
