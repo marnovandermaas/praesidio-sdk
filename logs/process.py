@@ -193,6 +193,9 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
           ring_receivingInstructions[labels[idx]].append(userInstructionMatrix[idx][fileNumber])
           ring_receivingAccesses[labels[idx]].append(l2CacheAccessMatrix[idx][fileNumber])
       #print(ring_sendingInstructions)
+      #print(ring_receivingInstructions)
+      #print(ring_sendingAccesses)
+      #print(ring_receivingAccesses)
 
 def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
@@ -300,8 +303,8 @@ elif ring_status:
     capsize=5
     markeredgewidth=1
     ax1 = fig.add_subplot(2,1,1)
-    ax1.set_xscale('log', basex=2)
-    ax1.set_yscale('log')
+    #ax1.set_xscale('log', basex=2)
+    #ax1.set_yscale('log')
     ax1.errorbar(x=packetSizes, y=txInstMeans, yerr=txInstDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax1.errorbar(x=packetSizes, y=rxInstMeans, yerr=rxInstDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax1.set_ylabel("Instructions")
@@ -309,7 +312,7 @@ elif ring_status:
     ax1.legend(["Send", "Receive"])
 
     ax2 = fig.add_subplot(2,1,2)
-    ax2.set_xscale('log', basex=2)
+    #ax2.set_xscale('log', basex=2)
     ax2.errorbar(x=packetSizes, y=txAccessMeans, yerr=txAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax2.errorbar(x=packetSizes, y=rxAccessMeans, yerr=rxAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax2.set_ylabel("Cache Accesses")
