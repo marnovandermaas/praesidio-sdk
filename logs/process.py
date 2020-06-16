@@ -153,10 +153,10 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
         sys.exit(-2)
 
     if(hello_status):
-      createEnclaveShimAccessList.append(0)
-      createEnclaveShimInstructionList.append(0)
-      setupLinuxDriverAccessList.append(0)
-      setupLinuxDriverInstructionList.append(0)
+      hello_createEnclaveShimAccessList.append(0)
+      hello_createEnclaveShimInstructionList.append(0)
+      hello_setupLinuxDriverAccessList.append(0)
+      hello_setupLinuxDriverInstructionList.append(0)
       table = [] # only used for pretty printing
       for num, label in enumerate(labels):
           table.append([label, userInstructionMatrix[num][fileNumber], kernelInstructionMatrix[num][fileNumber], totalInstructionMatrix[num][fileNumber], l2CacheAccessMatrix[num][fileNumber]])
@@ -164,11 +164,11 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
               if(kernelInstructionMatrix[num][fileNumber] != totalInstructionMatrix[num][fileNumber]):
                   print("ERROR: something went wrong when processing create enclave.")
                   sys.exit(-3)
-              createEnclaveShimInstructionList[fileNumber] += kernelInstructionMatrix[num][fileNumber]
-              createEnclaveShimAccessList[fileNumber] += l2CacheAccessMatrix[num][fileNumber]
+              hello_createEnclaveShimInstructionList[fileNumber] += kernelInstructionMatrix[num][fileNumber]
+              hello_createEnclaveShimAccessList[fileNumber] += l2CacheAccessMatrix[num][fileNumber]
           if(label >= 1000 and label < 1100):
-              setupLinuxDriverInstructionList[fileNumber] += totalInstructionMatrix[num][fileNumber]
-              setupLinuxDriverAccessList[fileNumber] += l2CacheAccessMatrix[num][fileNumber]
+              hello_setupLinuxDriverInstructionList[fileNumber] += totalInstructionMatrix[num][fileNumber]
+              hello_setupLinuxDriverAccessList[fileNumber] += l2CacheAccessMatrix[num][fileNumber]
 
       print(tabulate.tabulate(table, headers=["label", "user inst.", "kernel inst.", "total inst.", "L2 accesses"]))
 
@@ -244,8 +244,8 @@ if hello_status:
   print("Receiving message: {:>16d}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(hello_receivingInstructions), statistics.stdev(hello_receivingInstructions), statistics.mean(hello_receivingAccesses), statistics.stdev(hello_receivingAccesses)))
 
   createLabels        = ['Prepare Enclave Pages', 'Setup Driver', 'Setup Enclave'] # Setup enclave includes setting up communication.
-  createInstructionsPercentages   = percentify([totalInstructionMatrix[hello_preparePagesRow], setupLinuxDriverInstructionList, [total - setup + comm for (total, setup, comm) in zip (totalInstructionMatrix[hello_createEnclaveRow_exclusive], setupLinuxDriverInstructionList, totalInstructionMatrix[hello_communicationSetupRow])]], totalInstructionMatrix[hello_createEnclaveRow])
-  createAccessesPercentages   = percentify([l2CacheAccessMatrix[hello_preparePagesRow], setupLinuxDriverAccessList, [total - setup + comm for (total, setup, comm) in zip (l2CacheAccessMatrix[hello_createEnclaveRow_exclusive], setupLinuxDriverAccessList, l2CacheAccessMatrix[hello_communicationSetupRow])]], l2CacheAccessMatrix[hello_createEnclaveRow])
+  createInstructionsPercentages   = percentify([totalInstructionMatrix[hello_preparePagesRow], hello_setupLinuxDriverInstructionList, [total - setup + comm for (total, setup, comm) in zip (totalInstructionMatrix[hello_createEnclaveRow_exclusive], hello_setupLinuxDriverInstructionList, totalInstructionMatrix[hello_communicationSetupRow])]], totalInstructionMatrix[hello_createEnclaveRow])
+  createAccessesPercentages   = percentify([l2CacheAccessMatrix[hello_preparePagesRow], hello_setupLinuxDriverAccessList, [total - setup + comm for (total, setup, comm) in zip (l2CacheAccessMatrix[hello_createEnclaveRow_exclusive], hello_setupLinuxDriverAccessList, l2CacheAccessMatrix[hello_communicationSetupRow])]], l2CacheAccessMatrix[hello_createEnclaveRow])
   print(createLabels)
   print(createInstructionsPercentages)
   print(createAccessesPercentages)
