@@ -298,25 +298,33 @@ elif ring_status:
     #print(rxAccessMeans)
     #print(txAccessDevs)
     #print(rxAccessDevs)
-    fig = pyplot.figure(figsize=(11,7))
+    fig = pyplot.figure(figsize=(5,7))
 
-    capsize=5
-    markeredgewidth=1
+    capsize=0 #5
+    markeredgewidth=0 #1
     ax1 = fig.add_subplot(2,1,1)
     #ax1.set_xscale('log', basex=2)
     #ax1.set_yscale('log')
     ax1.errorbar(x=packetSizes, y=txInstMeans, yerr=txInstDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax1.errorbar(x=packetSizes, y=rxInstMeans, yerr=rxInstDevs, capsize=capsize, markeredgewidth=markeredgewidth)
-    ax1.set_ylabel("Instructions")
+    ax1.set_ylabel("Thousands of Instructions")
     #ax1.set_title("Costs for sending and receiving messages.")
     ax1.legend(["Send", "Receive"])
+    ax1.set_xlim((0,4096))
+    ax1.set_xticks(range(0,4096+1,512))
+    ax1.set_yticks(range(0,120000+1,20000))
+    ax1.set_yticklabels(range(0, 120+1, 2))
+    ax1.grid()
 
     ax2 = fig.add_subplot(2,1,2)
     #ax2.set_xscale('log', basex=2)
     ax2.errorbar(x=packetSizes, y=txAccessMeans, yerr=txAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax2.errorbar(x=packetSizes, y=rxAccessMeans, yerr=rxAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth)
-    ax2.set_ylabel("Cache Accesses")
+    ax2.set_ylabel("Last-Level Cache Accesses (read and write)")
     ax2.set_xlabel("Packet Size in Bytes")
-    ax2.legend(["Send", "Receive"])
+    ax2.legend(["Send", "Receive"], loc='upper left')
+    ax2.set_xlim((0, 4096))
+    ax2.set_xticks(range(0,4096+1,512))
+    ax2.grid()
 
     pyplot.show()
