@@ -7,7 +7,7 @@ import numpy
 import statistics
 
 if(len(sys.argv) < 3):
-    print("ERROR too few arguments.\nprocess.py {hello, ring} filenames ...\nThe first argument should be the type of log file followed by one or more file names of log files as input to this python script.")
+    print("ERROR too few arguments.\nprocess.py {hello, ring, page} filenames ...\nThe first argument should be the type of log file followed by one or more file names of log files as input to this python script.")
     sys.exit(-1)
 
 def getMeanAndDeviation(list):
@@ -35,18 +35,25 @@ hello_communicationSetupRow = hello_driverRow + 14
 hello_firstSendingRow = hello_communicationSetupRow + 3
 
 #Definition of row numbers for ring benchmark:
-ring_firstSendingRow = 32
+ring_firstSendingRow = 16
+
+#Definition of row numbers for page benchmark:
+page_sendPageRow = 16
 
 #Definition of indeces within rows:
 labelIndex = 0
 totalInstructionIndex = 1
 kernelInstructionIndex = 2
 
-#Lists for sending and receiving performance in hello benchmark
+#Lists for sending and receiving performance in hello benchmark and for creating enclaves
 hello_sendingInstructions = []
 hello_receivingInstructions = []
 hello_sendingAccesses = []
 hello_receivingAccesses = []
+hello_createEnclaveShimInstructionList = []
+hello_setupLinuxDriverInstructionList = []
+hello_createEnclaveShimAccessList = []
+hello_setupLinuxDriverAccessList = []
 
 #Dicts for sending and receiving performance in ring benchmark
 ring_sendingInstructions = {}
@@ -54,22 +61,25 @@ ring_receivingInstructions = {}
 ring_sendingAccesses = {}
 ring_receivingAccesses = {}
 
+#Lists for sending complete pages in page benchmark
+page_sendInstructions = []
+page_sendAccesses = []
+
 #Matrices and lists used for final results
 userInstructionMatrix = []
 kernelInstructionMatrix = []
 totalInstructionMatrix = []
 l2CacheAccessMatrix = []
-createEnclaveShimInstructionList = []
-setupLinuxDriverInstructionList = []
-createEnclaveShimAccessList = []
-setupLinuxDriverAccessList = []
 
 hello_status = False
 ring_status = False
+page_status = False
 if sys.argv[1] == "hello":
   hello_status = True
 elif sys.argv[1] == "ring":
   ring_status = True
+elif sys.argv[1] == "page":
+    page_status = True
 else:
   print("First argument needs to be hello or ring.")
   sys.exit(-2)
@@ -174,10 +184,10 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
 
       for idx in range(hello_firstSendingRow, len(userInstructionMatrix)):
           if((idx-hello_firstSendingRow) % 2 == 0):
-              hello_sendingInstructions.append(userInstructionMatrix[idx][fileNumber])
+              hello_sendingInstructions.append(totalInstructionMatrix[idx][fileNumber])
               hello_sendingAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
           else:
-              hello_receivingInstructions.append(userInstructionMatrix[idx][fileNumber])
+              hello_receivingInstructions.append(totalInstructionMatrix[idx][fileNumber])
               hello_receivingAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
     elif(ring_status):
       for idx in range(ring_firstSendingRow, len(userInstructionMatrix)):
@@ -187,15 +197,17 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
           ring_sendingAccesses[labels[idx]] = []
           ring_receivingAccesses[labels[idx]] = []
         if((idx-ring_firstSendingRow) % 2 == 0):
-          ring_sendingInstructions[labels[idx]].append(userInstructionMatrix[idx][fileNumber])
+          ring_sendingInstructions[labels[idx]].append(totalInstructionMatrix[idx][fileNumber])
           ring_sendingAccesses[labels[idx]].append(l2CacheAccessMatrix[idx][fileNumber])
         else:
-          ring_receivingInstructions[labels[idx]].append(userInstructionMatrix[idx][fileNumber])
+          ring_receivingInstructions[labels[idx]].append(totalInstructionMatrix[idx][fileNumber])
           ring_receivingAccesses[labels[idx]].append(l2CacheAccessMatrix[idx][fileNumber])
-      #print(ring_sendingInstructions)
-      #print(ring_receivingInstructions)
-      #print(ring_sendingAccesses)
-      #print(ring_receivingAccesses)
+    elif(page_status):
+        if(labels[page_sendPageRow] != 0xBABE):
+            print("Error: page send row has wrong label")
+            sys.exit(-7)
+        page_sendInstructions.append(totalInstructionMatrix[page_sendPageRow][fileNumber])
+        page_sendAccesses.append(l2CacheAccessMatrix[page_sendPageRow][fileNumber])
 
 def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
@@ -328,3 +340,6 @@ elif ring_status:
     ax2.grid()
 
     pyplot.show()
+elif page_status:
+    print(page_sendInstructions)
+    print(page_sendAccesses)
