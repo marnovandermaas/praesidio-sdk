@@ -203,11 +203,12 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
           ring_receivingInstructions[labels[idx]].append(totalInstructionMatrix[idx][fileNumber])
           ring_receivingAccesses[labels[idx]].append(l2CacheAccessMatrix[idx][fileNumber])
     elif(page_status):
-        if(labels[page_sendPageRow] != 0xBABE):
-            print("Error: page send row has wrong label")
-            sys.exit(-7)
-        page_sendInstructions.append(totalInstructionMatrix[page_sendPageRow][fileNumber])
-        page_sendAccesses.append(l2CacheAccessMatrix[page_sendPageRow][fileNumber])
+        for idx in range(page_sendPageRow, len(userInstructionMatrix)):
+            if(labels[idx] != 0xBABE):
+                print("Error: page send row has wrong label")
+                sys.exit(-7)
+            page_sendInstructions.append(totalInstructionMatrix[idx][fileNumber])
+            page_sendAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
 
 def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
@@ -342,4 +343,6 @@ elif ring_status:
     pyplot.show()
 elif page_status:
     print(page_sendInstructions)
+    print(numpy.percentile(page_sendInstructions, [25,50,75]))
     print(page_sendAccesses)
+    print(numpy.percentile(page_sendAccesses, [25,50,75]))
