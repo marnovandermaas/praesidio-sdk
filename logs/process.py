@@ -315,10 +315,11 @@ elif ring_status:
 
     capsize=0 #5
     markeredgewidth=0 #1
+    elinewidth=2
     ax1 = fig.add_subplot(2,1,1)
     #ax1.set_xscale('log', basex=2)
     #ax1.set_yscale('log')
-    ax1.errorbar(x=packetSizes, y=txInstMeans, yerr=txInstDevs, capsize=capsize, markeredgewidth=markeredgewidth)
+    ax1.errorbar(x=packetSizes, y=txInstMeans, yerr=txInstDevs, capsize=capsize, markeredgewidth=markeredgewidth, elinewidth=elinewidth)
     ax1.errorbar(x=packetSizes, y=rxInstMeans, yerr=rxInstDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax1.set_ylabel("Thousands of Instructions")
     #ax1.set_title("Costs for sending and receiving messages.")
@@ -331,7 +332,7 @@ elif ring_status:
 
     ax2 = fig.add_subplot(2,1,2)
     #ax2.set_xscale('log', basex=2)
-    ax2.errorbar(x=packetSizes, y=txAccessMeans, yerr=txAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth)
+    ax2.errorbar(x=packetSizes, y=txAccessMeans, yerr=txAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth, elinewidth=elinewidth)
     ax2.errorbar(x=packetSizes, y=rxAccessMeans, yerr=rxAccessDevs, capsize=capsize, markeredgewidth=markeredgewidth)
     ax2.set_ylabel("Last-Level Cache Accesses (read and write)")
     ax2.set_xlabel("Packet Size in Bytes")
