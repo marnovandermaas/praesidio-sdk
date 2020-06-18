@@ -208,10 +208,12 @@ sim: $(spike) $(managementshim) $(bbl)
 	$(spike) --isa=$(ISA) -p1 --enclave=1 $(bbl)
 
 sim_cache: $(spike) $(managementshim) $(bbl)
-	$(spike) --isa=$(ISA) -p1 --ic=128:4:64 --dc=64:8:64 --l2=512:8:64 --l2_partitioning=0 --enclave=1 $(bbl)
+	$(spike) --isa=$(ISA) -p1 --ic=64:8:64 --dc=64:8:64 --l2=1024:8:64 --l2_partitioning=0 --enclave=1 $(bbl)
 # caches specified with sets:ways:blocks
 # https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-optimization-manual.pdf Table 2-31
 # 32KiB IC and DC, 256KiB L2, 8MB L3, line size 64 bytes, IC is 4 way associative, DC & L2 are 8 way associative, L3 is 16 way associative
+# https://docs.boom-core.org/en/latest/sections/intro-overview/boom.html
+# 32KiB IC and DC, 512KiB LLC, all 8-way associative
 
 # Relevant partition type codes
 BBL   = 2E54B353-1271-4842-806F-E436D6AF6985
