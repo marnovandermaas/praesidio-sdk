@@ -248,8 +248,12 @@ if hello_status:
   createInstructionsPercentages   = percentify([totalInstructionMatrix[hello_preparePagesRow], hello_setupLinuxDriverInstructionList, [total - setup + comm for (total, setup, comm) in zip (totalInstructionMatrix[hello_createEnclaveRow_exclusive], hello_setupLinuxDriverInstructionList, totalInstructionMatrix[hello_communicationSetupRow])]], totalInstructionMatrix[hello_createEnclaveRow])
   createAccessesPercentages   = percentify([l2CacheAccessMatrix[hello_preparePagesRow], hello_setupLinuxDriverAccessList, [total - setup + comm for (total, setup, comm) in zip (l2CacheAccessMatrix[hello_createEnclaveRow_exclusive], hello_setupLinuxDriverAccessList, l2CacheAccessMatrix[hello_communicationSetupRow])]], l2CacheAccessMatrix[hello_createEnclaveRow])
   print(createLabels)
+  print("Instruction percentages:")
   print(createInstructionsPercentages)
+  print(getMeanAndDeviation(totalInstructionMatrix[hello_createEnclaveRow]))
+  print("Cache access percentages:")
   print(createAccessesPercentages)
+  print(getMeanAndDeviation(l2CacheAccessMatrix[hello_createEnclaveRow]))
 
   # Making bar chart
   ticks = [0, 2]#[0,2,4]
@@ -272,7 +276,7 @@ if hello_status:
   pyplot.ylim(-10, 110)
   pyplot.title("Cost to Create Enclave")
 
-  pyplot.show()
+  #pyplot.show()
 elif ring_status:
     packetSizes = []
     txInstMeans = []
