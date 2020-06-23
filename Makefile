@@ -186,7 +186,7 @@ $(spike): $(spike_srcdir) $(libfesvr)
 	mkdir -p $(dir $@)
 	cd $(spike_wrkdir) && $</configure \
 		--prefix=$(dir $(abspath $(dir $@))) \
-		--with-fesvr=$(dir $(abspath $(dir $(libfesvr))))
+		--with-fesvr=$(dir $(abspath $(dir $(libfesvr)))) #--enable-histogram
 	$(MAKE) -C $(spike_wrkdir)
 	$(MAKE) -C $(spike_wrkdir) install
 	touch -c $@
