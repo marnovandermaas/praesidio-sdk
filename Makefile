@@ -215,6 +215,9 @@ sim_cache: $(spike) $(managementshim) $(bbl)
 # https://docs.boom-core.org/en/latest/sections/intro-overview/boom.html
 # 32KiB IC and DC, 512KiB LLC, all 8-way associative
 
+sim_pipe: $(spike) $(managementshim) $(bbl)
+	$(spike) --isa=$(ISA) -p2 $(bbl)
+
 # Relevant partition type codes
 BBL   = 2E54B353-1271-4842-806F-E436D6AF6985
 LINUX = 0FC63DAF-8483-4772-8E79-3D69D8477DE4
