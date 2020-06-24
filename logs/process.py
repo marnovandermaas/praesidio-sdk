@@ -7,7 +7,7 @@ import numpy
 import statistics
 
 if(len(sys.argv) < 3):
-    print("ERROR too few arguments.\nprocess.py {hello, ring, page} filenames ...\nThe first argument should be the type of log file followed by one or more file names of log files as input to this python script.")
+    print("ERROR too few arguments.\nprocess.py {hello, ring, page, unix} filenames ...\nThe first argument should be the type of log file followed by one or more file names of log files as input to this python script.")
     sys.exit(-1)
 
 def getMeanAndDeviation(list):
@@ -40,6 +40,9 @@ ring_firstSendingRow = 16
 #Definition of row numbers for page benchmark:
 page_sendPageRow = 16
 
+#Definition of row number of unix pipe benchmark:
+unix_firstSendRow = 0
+
 #Definition of indeces within rows:
 labelIndex = 0
 totalInstructionIndex = 1
@@ -65,6 +68,10 @@ ring_receivingAccesses = {}
 page_sendInstructions = []
 page_sendAccesses = []
 
+#Lists for sending over unix pipes
+unix_sendInstructions = []
+unix_sendAccesses = []
+
 #Matrices and lists used for final results
 userInstructionMatrix = []
 kernelInstructionMatrix = []
@@ -74,15 +81,18 @@ l2CacheAccessMatrix = []
 hello_status = False
 ring_status = False
 page_status = False
+unix_status = False
 if sys.argv[1] == "hello":
-  hello_status = True
+    hello_status = True
 elif sys.argv[1] == "ring":
-  ring_status = True
+    ring_status = True
 elif sys.argv[1] == "page":
     page_status = True
+elif sys.argv[1] == "unix":
+    unix_status = True
 else:
-  print("First argument needs to be hello or ring.")
-  sys.exit(-2)
+    print("First argument needs to be hello or ring.")
+    sys.exit(-2)
 
 for fileNumber, fileName in enumerate(sys.argv[2:]):
     print("Processing file name: "+fileName)
@@ -209,6 +219,13 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
                 sys.exit(-7)
             page_sendInstructions.append(totalInstructionMatrix[idx][fileNumber])
             page_sendAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
+    elif(unix_status):
+        for idx in range(unix_firstSendRow, len(userInstructionMatrix)):
+            if(labels[idx] != 0xBABE):
+                print("Error: unix pipe send row has wrong label")
+                sys.exit(-8)
+            unix_sendInstructions.append(totalInstructionMatrix[idx][fileNumber])
+            unix_sendAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
 
 def makeStackBar(level, percentages, labels):
     if(len(percentages) != len(labels)):
@@ -351,3 +368,8 @@ elif page_status:
     print(numpy.percentile(page_sendInstructions, [25,50,75]))
     print(page_sendAccesses)
     print(numpy.percentile(page_sendAccesses, [25,50,75]))
+elif unix_status:
+    print(unix_sendInstructions)
+    print(numpy.percentile(unix_sendInstructions, [25,50,75]))
+    print(unix_sendAccesses)
+    print(numpy.percentile(unix_sendAccesses, [25,50,75]))
