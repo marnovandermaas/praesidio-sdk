@@ -9,9 +9,12 @@ This builds a complete RISC-V cross-compile toolchain for Praesidio enclave syst
 
 ## Build Instructions
 
-Checkout this repository. Then you need to checkout all of the linked submodules using:
+Clone this repository and initialize all the submodules with the following commands:
 
-`git submodule update --recursive --init`
+```
+git clone https://github.com/marnovandermaas/praesidio-sdk.git
+git submodule update --recursive --init
+```
 
 This will take some time and require around 7 GiB of disk space. At the moment the submodule update might skip the `riscv-gnu-toolchain` if this is the case for you please execute the following commands:
 
@@ -32,4 +35,4 @@ You can boot linux on Spike by running `make sim`. This will build the Spike sim
 ## Using Linux
 To log in:
 - username: `root`
-- password: `sifive`
+- password: `root`
