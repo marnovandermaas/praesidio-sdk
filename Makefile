@@ -152,7 +152,7 @@ $(bbl): $(pk_srcdir) $(vmlinux_stripped)
 		--host=$(target) \
 		--with-payload=$(vmlinux_stripped) \
 		--enable-logo \
-		--with-logo=$(abspath conf/sifive_logo.txt)
+		--with-logo=$(abspath conf/praesidio_logo.txt)
 	CFLAGS="-mabi=$(ABI) -march=$(ISA)" $(MAKE) -C $(pk_wrkdir)
 
 $(bin): $(bbl)
