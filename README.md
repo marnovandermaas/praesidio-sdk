@@ -5,6 +5,7 @@ This builds a complete RISC-V cross-compile toolchain for Praesidio enclave syst
 ## Tested Configurations
 
 ### Ubuntu 18.04 x86_64 host
+
 - Build dependencies: `autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev libusb-1.0-0-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev device-tree-compiler pkg-config libexpat-dev python3-doit`
 
 ## Build Instructions
@@ -33,6 +34,14 @@ Once the submodules are initialized, run `make` and the complete toolchain and b
 You can boot linux on Spike by running `make sim`. This will build the Spike simulator and Linux. Finally, it will run Linux on Spike. The completed build tree will consume about 14 GiB of disk space.
 
 ## Using Linux
+
 To log in:
 - username: `root`
 - password: `root`
+
+And to shutdown the system use the `halt` command.
+
+## Future Features
+These are things that still need to be implemented:
+- The user API, Linux driver and management shim already have a way to request attestation, but we still need to implement the measurement of the shim and the enclave as well as signing these measurements.
+- Install a trap handler in the management shim.
