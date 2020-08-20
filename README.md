@@ -29,11 +29,9 @@ cd ..
 
 Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while.
 
-## Booting Linux on a simulator
+## Booting Linux on Spike
 
 You can boot linux on Spike by running `make sim`. This will build the Spike simulator and Linux. Finally, it will run Linux on Spike. The completed build tree will consume about 14 GiB of disk space.
-
-## Using Linux
 
 To log in:
 - username: `root`
