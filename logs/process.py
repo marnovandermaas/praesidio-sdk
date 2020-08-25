@@ -258,8 +258,8 @@ def makeStackBar(level, percentages, labels):
         cumm += p
 
 if hello_status:
-  print("Sending message:   {:>16d}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(hello_sendingInstructions), statistics.stdev(hello_sendingInstructions), statistics.mean(hello_sendingAccesses), statistics.stdev(hello_sendingAccesses)))
-  print("Receiving message: {:>16d}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(hello_receivingInstructions), statistics.stdev(hello_receivingInstructions), statistics.mean(hello_receivingAccesses), statistics.stdev(hello_receivingAccesses)))
+  print("Sending message:   {:>16.4f}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(hello_sendingInstructions), statistics.stdev(hello_sendingInstructions), statistics.mean(hello_sendingAccesses), statistics.stdev(hello_sendingAccesses)))
+  print("Receiving message: {:>16.4f}±{:>5.2f} instructions {:>16.4f}±{:>5.2f} cache accesses".format(statistics.mean(hello_receivingInstructions), statistics.stdev(hello_receivingInstructions), statistics.mean(hello_receivingAccesses), statistics.stdev(hello_receivingAccesses)))
 
   createLabels        = ['Prepare Enclave Pages', 'Setup Driver', 'Setup Enclave'] # Setup enclave includes setting up communication.
   createInstructionsPercentages   = percentify([totalInstructionMatrix[hello_preparePagesRow], hello_setupLinuxDriverInstructionList, [total - setup + comm for (total, setup, comm) in zip (totalInstructionMatrix[hello_createEnclaveRow_exclusive], hello_setupLinuxDriverInstructionList, totalInstructionMatrix[hello_communicationSetupRow])]], totalInstructionMatrix[hello_createEnclaveRow])
