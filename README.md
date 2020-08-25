@@ -12,7 +12,7 @@ This builds a complete RISC-V cross-compile toolchain for Praesidio enclave syst
 
 Clone this repository and initialize all the submodules with the following commands:
 
-```
+```bash
 git clone https://github.com/marnovandermaas/praesidio-sdk.git
 cd praesidio-sdk
 git submodule update --recursive --init
@@ -20,7 +20,7 @@ git submodule update --recursive --init
 
 This will take some time and require around 7 GiB of disk space. At the moment the submodule update might skip the `riscv-gnu-toolchain` if this is the case for you please execute the following commands:
 
-```
+```bash
 git clone https://github.com/riscv/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
 git checkout b4dae89f85bf882852c6186b1284df11065bfcd9
@@ -54,7 +54,7 @@ This section is dedicated to instructions on how to replicate the results of the
 
 ### Enclave Creation
 To get the results in the table titled "Setup Cost for Creating Enclaves with Proportion ofthe Different Phases of the Process and the Total Cost," please run the following commands:
-```
+```bash
 cd logs
 python3 process.py hello hello20200623_*
 ```
