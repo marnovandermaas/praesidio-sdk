@@ -14,6 +14,7 @@ Clone this repository and initialize all the submodules with the following comma
 
 ```
 git clone https://github.com/marnovandermaas/praesidio-sdk.git
+cd praesidio-sdk
 git submodule update --recursive --init
 ```
 
