@@ -48,7 +48,15 @@ These are things that still need to be implemented:
 ## Paper Results
 This section is dedicated to instructions on how to replicate the results of the paper title "Protecting Enclaves from Intra-Core Side-Channel Attacks through Physical Isolation."
 
+### Prerequisites
+Please make sure you have `python3` installed with the following packages: `csv tabulate matplotlib numpy statistics`.
+
+
 ### Ring Buffer
+To get the results in the figure with the caption "Ring buffer performance over shared pages between enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile," please run the following commands:
+```bash
+Ring buffer performance over shared pages be-tween enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile.
+```
 
 ### Page Donation
 To get the results from the "Page Donation" of the evaluation run the following commands:
