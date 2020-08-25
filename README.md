@@ -55,7 +55,9 @@ Please make sure you have `python3` installed with the following packages: `csv 
 ### Ring Buffer
 To get the results in the figure with the caption "Ring buffer performance over shared pages between enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile," please run the following commands:
 ```bash
-Ring buffer performance over shared pages be-tween enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile.
+cd logs
+python3 process.py ring ring20200622_2.log
+cd ..
 ```
 
 ### Page Donation
@@ -63,12 +65,14 @@ To get the results from the "Page Donation" of the evaluation run the following 
 ```bash
 cd logs
 python3 process.py page page20200622_*
+cd ..
 ```
 
 To get the comparable results for Unix pipes run the following commands:
 ```bash
 cd logs
 python3 process.py unix unixpipe20200624.log
+cd ..
 ```
 
 Both of these output the array of raw values and then an array of 3 elements; which are the first, second and third quartile used for the calculation in the paper.
@@ -77,16 +81,33 @@ Both of these output the array of raw values and then an array of 3 elements; wh
 To get the results in the table titled "Setup Cost for Creating Enclaves with Proportion ofthe Different Phases of the Process and the Total Cost," please run the following commands:
 ```bash
 cd logs
-python3 process.py hello hello20200623_*
+python3 process.py hello hello20200825_*
+cd ..
 ```
 
 The result should end by printing the following, which corresponds with the values in the table:
 ```
 ['Prepare Enclave Pages', 'Setup Driver', 'Setup Enclave']
 Instruction percentages:
-[(2.670941607132784, 0.0022230164082368553), (96.94716228428898, 0.0008729128092426208), (0.38181063310166724, 0.0030959790463510606)]
-(9359412, 5457)
+[(2.7616950031938226, 0.003393724298664136), (95.75768931645021, 0.052721100958777356), (1.4805311651344435, 0.054349226158271424)]
+(9465753.285714285, 7467.285714285448)
 Cache access percentages:
-[(4.093558958317874, 0.05345870769130734), (92.93880007388158, 0.06871872311090499), (2.966387389071329, 0.0219654398859479)]
-(79771.66666666667, 95.66666666667152)
+[(4.098405288399673, 0.07477941320776704), (92.82815436310099, 0.04328939199700699), (3.073440348499327, 0.07366749766401659)]
+(80985.28571428571, 313.7142857142899)
 ```
+
+### Generating Logs
+The above instructions all rely on previously generated logs. You may also generate your own logs by following these instructions:
+1. Edit line 78 in `riscv-isa-sim/riscv/sim.h` to be `static const size_t INTERLEAVE = 6;`
+1. If you've already followed the build instructions please remove the Spike build directory by `rm -rf work/riscv-isa-sim/`
+1. Then run `make sim_cache` which will build Spike again and boot up our system with caches enabled (note: this is a lot slower than with caches disabled). If you want to recreate the unix pipes benchmark, use the `make sim_pipe` instead.
+1. Once booted up use the login credentials shown in the booting section.
+1. Change to the correct directory for the benchmark you would like to run:
+    * `cd benchmarks/ring` for the ring buffer benchmark
+    * `cd benchmarks/page` for the page donation benchmark
+    * `cd benchmarks/unix` for the unix pipe comparison to the page donation benchmark
+    * `cd benchmarks/hello` for the enclave creation benchmark
+1. Run the benchmark by running `./user.out`
+1. Once the benchmark is done running, press control-c twice to exit the simulator
+1. Optional: If you want to keep your log do `mv stats.log logs/<log_name>.log` where you replace `<log_name>` to a log name of your choosing
+1. Run the python script with `python3 process.py {ring, page, unix, hello} <log_file>` where you must choose what type of benchmark you've run and the log file you want to process.
