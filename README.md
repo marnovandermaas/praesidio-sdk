@@ -55,7 +55,9 @@ Please make sure you have `python3` installed with the following packages: `csv 
 ### Ring Buffer
 To get the results in the figure with the caption "Ring buffer performance over shared pages between enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile," please run the following commands:
 ```bash
-Ring buffer performance over shared pages be-tween enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile.
+cd logs
+python3 process.py ring ring20200622_2.log
+cd ..
 ```
 
 ### Page Donation
@@ -63,12 +65,14 @@ To get the results from the "Page Donation" of the evaluation run the following 
 ```bash
 cd logs
 python3 process.py page page20200622_*
+cd ..
 ```
 
 To get the comparable results for Unix pipes run the following commands:
 ```bash
 cd logs
 python3 process.py unix unixpipe20200624.log
+cd ..
 ```
 
 Both of these output the array of raw values and then an array of 3 elements; which are the first, second and third quartile used for the calculation in the paper.
@@ -78,6 +82,7 @@ To get the results in the table titled "Setup Cost for Creating Enclaves with Pr
 ```bash
 cd logs
 python3 process.py hello hello20200623_*
+cd ..
 ```
 
 The result should end by printing the following, which corresponds with the values in the table:
