@@ -217,7 +217,7 @@ sim_cache: $(spike) $(managementshim) $(bbl)
 # 32KiB IC and DC, 512KiB LLC, all 8-way associative
 
 sim_pipe: $(spike) $(managementshim) $(bbl)
-	$(spike) --isa=$(ISA) -p2 $(bbl)
+	$(spike) --isa=$(ISA) -p2 --ic=64:8:64 --dc=64:8:64 --l2=1024:8:64 --l2_partitioning=0 $(bbl)
 
 # Relevant partition type codes
 BBL   = 2E54B353-1271-4842-806F-E436D6AF6985
