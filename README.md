@@ -81,7 +81,7 @@ Both of these output the array of raw values and then an array of 3 elements; wh
 To get the results in the table titled "Setup Cost for Creating Enclaves with Proportion ofthe Different Phases of the Process and the Total Cost," please run the following commands:
 ```bash
 cd logs
-python3 process.py hello hello20200623_*
+python3 process.py hello hello20200825_*
 cd ..
 ```
 
@@ -89,11 +89,11 @@ The result should end by printing the following, which corresponds with the valu
 ```
 ['Prepare Enclave Pages', 'Setup Driver', 'Setup Enclave']
 Instruction percentages:
-[(2.670941607132784, 0.0022230164082368553), (96.94716228428898, 0.0008729128092426208), (0.38181063310166724, 0.0030959790463510606)]
-(9359412, 5457)
+[(2.7616950031938226, 0.003393724298664136), (95.75768931645021, 0.052721100958777356), (1.4805311651344435, 0.054349226158271424)]
+(9465753.285714285, 7467.285714285448)
 Cache access percentages:
-[(4.093558958317874, 0.05345870769130734), (92.93880007388158, 0.06871872311090499), (2.966387389071329, 0.0219654398859479)]
-(79771.66666666667, 95.66666666667152)
+[(4.098405288399673, 0.07477941320776704), (92.82815436310099, 0.04328939199700699), (3.073440348499327, 0.07366749766401659)]
+(80985.28571428571, 313.7142857142899)
 ```
 
 ### Generating Logs
