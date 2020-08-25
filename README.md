@@ -95,3 +95,10 @@ Cache access percentages:
 [(4.093558958317874, 0.05345870769130734), (92.93880007388158, 0.06871872311090499), (2.966387389071329, 0.0219654398859479)]
 (79771.66666666667, 95.66666666667152)
 ```
+
+### Generating Logs
+The above instructions all rely on previously generated logs. You may also generate your own logs by following these instructions:
+1. Edit line 78 in `riscv-isa-sim/riscv/sim.h` to be `static const size_t INTERLEAVE = 6;`
+1. If you've already followed the build instructions please remove the Spike build directory by `rm -rf work/riscv-isa-sim/`
+1. Then run `make sim_cache` which will build Spike again and boot up our system with caches enabled (note: this is a lot slower than with caches disabled)
+
