@@ -51,6 +51,19 @@ This section is dedicated to instructions on how to replicate the results of the
 ### Ring Buffer
 
 ### Page Donation
+To get the results from the "Page Donation" of the evaluation run the following commands:
+```bash
+cd logs
+python3 process.py page page20200622_*
+```
+
+To get the comparable results for Unix pipes run the following commands:
+```bash
+cd logs
+python3 process.py unix unixpipe20200624.log
+```
+
+Both of these output the array of raw values and then an array of 3 elements; which are the first, second and third quartile used for the calculation in the paper.
 
 ### Enclave Creation
 To get the results in the table titled "Setup Cost for Creating Enclaves with Proportion ofthe Different Phases of the Process and the Total Cost," please run the following commands:
