@@ -100,5 +100,14 @@ Cache access percentages:
 The above instructions all rely on previously generated logs. You may also generate your own logs by following these instructions:
 1. Edit line 78 in `riscv-isa-sim/riscv/sim.h` to be `static const size_t INTERLEAVE = 6;`
 1. If you've already followed the build instructions please remove the Spike build directory by `rm -rf work/riscv-isa-sim/`
-1. Then run `make sim_cache` which will build Spike again and boot up our system with caches enabled (note: this is a lot slower than with caches disabled)
-
+1. Then run `make sim_cache` which will build Spike again and boot up our system with caches enabled (note: this is a lot slower than with caches disabled). If you want to recreate the unix pipes benchmark, use the `make sim_pipe` instead.
+1. Once booted up use the login credentials shown in the booting section.
+1. Change to the correct directory for the benchmark you would like to run:
+    * `cd benchmarks/ring` for the ring buffer benchmark
+    * `cd benchmarks/page` for the page donation benchmark
+    * `cd benchmarks/unix` for the unix pipe comparison to the page donation benchmark
+    * `cd benchmarks/hello` for the enclave creation benchmark
+1. Run the benchmark by running `./user.out`
+1. Once the benchmark is done running, press control-c twice to exit the simulator
+1. Optional: If you want to keep your log do `mv stats.log logs/<log_name>.log` where you replace `<log_name>` to a log name of your choosing
+1. Run the python script with `python3 process.py {ring, page, unix, hello} <log_file>` where you must choose what type of benchmark you've run and the log file you want to process.
