@@ -64,14 +64,14 @@ cd ..
 To get the results from the "Page Donation" of the evaluation run the following commands:
 ```bash
 cd logs
-python3 process.py page page20200622_*
+python3 process.py page page20200826.log
 cd ..
 ```
 
 To get the comparable results for Unix pipes run the following commands:
 ```bash
 cd logs
-python3 process.py unix unixpipe20200624.log
+python3 process.py unix unixpipe20200826.log
 cd ..
 ```
 
