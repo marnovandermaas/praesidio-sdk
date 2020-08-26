@@ -213,17 +213,15 @@ for fileNumber, fileName in enumerate(sys.argv[2:]):
           ring_receivingInstructions[labels[idx]].append(totalInstructionMatrix[idx][fileNumber])
           ring_receivingAccesses[labels[idx]].append(l2CacheAccessMatrix[idx][fileNumber])
     elif(page_status):
-        for idx in range(page_sendPageRow, len(userInstructionMatrix)):
+        for idx in range(0, len(userInstructionMatrix)):
             if(labels[idx] != 0xBABE):
-                print("Error: page send row has wrong label")
-                sys.exit(-7)
+                continue
             page_sendInstructions.append(totalInstructionMatrix[idx][fileNumber])
             page_sendAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
     elif(unix_status):
-        for idx in range(unix_firstSendRow, len(userInstructionMatrix)):
+        for idx in range(0, len(userInstructionMatrix)):
             if(labels[idx] != 0xBABE):
-                print("Error: unix pipe send row has wrong label")
-                sys.exit(-8)
+                continue
             unix_sendInstructions.append(totalInstructionMatrix[idx][fileNumber])
             unix_sendAccesses.append(l2CacheAccessMatrix[idx][fileNumber])
 
