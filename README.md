@@ -44,6 +44,7 @@ And to shutdown the system use the `halt` command.
 These are things that still need to be implemented:
 - The user API, Linux driver and management shim already have a way to request attestation, but we still need to implement the measurement of the shim and the enclave as well as signing these measurements.
 - Install a trap handler in the management shim.
+- Tags are currently the same throughout the system. We should implement a prototype of tag translation so that tags in the last-level cache can be compressed compared with those in the tag directory.
 
 ## Paper Results
 This section is dedicated to instructions on how to replicate the results of the paper title "Protecting Enclaves from Intra-Core Side-Channel Attacks through Physical Isolation."
