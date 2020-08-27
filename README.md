@@ -116,3 +116,7 @@ The above instructions all rely on previously generated logs. You may also gener
 1. Once the benchmark is done running, press control-c twice to exit the simulator
 1. Optional: If you want to keep your log do `mv stats.log logs/<log_name>.log` where you replace `<log_name>` to a log name of your choosing
 1. Run the python script with `python3 process.py {ring, page, unix, hello} <log_files>` where you must choose what type of benchmark you've run and the log file you want to process.
+
+### Management Shim Size
+To calculate the size of the management shim run the following command:
+`ls -lh praesidio-software/build/managementshim/management.bin`
