@@ -118,5 +118,10 @@ The above instructions all rely on previously generated logs. You may also gener
 1. Run the python script with `python3 process.py {ring, page, unix, hello} <log_files>` where you must choose what type of benchmark you've run and the log file you want to process.
 
 ### Management Shim Size
-To calculate the size of the management shim run the following command:
-`ls -lh praesidio-software/build/managementshim/management.bin`
+To calculate the size of the management shim and the lines of code, run the following commands:
+```bash
+ls -lh praesidio-software/build/managementshim/management.bin
+cd praesidio-software/lib
+wc -l ../managementshim/* instructions.* praesidiooutput.h mailbox.* unsignedinteger.h enclaveLibrary.h praesidiopage.h praesidiooutput.*
+cd ../..
+```
