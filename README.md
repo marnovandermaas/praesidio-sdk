@@ -122,6 +122,6 @@ To calculate the size of the management shim and the lines of code, run the foll
 ```bash
 ls -lh praesidio-software/build/managementshim/management.bin
 cd praesidio-software/lib
-wc -l ../managementshim/* instructions.* praesidiooutput.h mailbox.* unsignedinteger.h enclaveLibrary.h praesidiopage.h praesidiooutput.*
+cat ../managementshim/* instructions.* praesidiooutput.h mailbox.* unsignedinteger.h enclaveLibrary.h praesidiopage.h praesidiooutput.* | sed '/^\s*$/d' | wc -l
 cd ../..
 ```
