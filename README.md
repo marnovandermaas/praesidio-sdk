@@ -61,7 +61,7 @@ Please make sure you have `python3` installed with the following packages: `csv 
 To get the results in the figure with the caption "Ring buffer performance over shared pages between enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile," please run the following commands:
 ```bash
 cd logs
-python3 process.py ring ring20200826.log
+python3 process.py ring ring20200828.log
 cd ..
 ```
 
