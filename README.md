@@ -1,6 +1,6 @@
 # Praesidio SDK
 
-This builds a complete RISC-V cross-compile toolchain for Praesidio enclave system. It is based on the SiFive Freedom Unleashed SDK.
+This builds a complete RISC-V cross-compile toolchain for Praesidio enclave system, which physically isolated enclaves on secure cores that are separate from application cores. This skeleton repository is based on a previous version of the SiFive Freedom Unleashed SDK.
 
 ## Tested Configurations
 
