@@ -1,3 +1,4 @@
+# See LICENSE for license details.
 # Copyright 2020 Marno van der Maas
 
 # RISCV should either be unset, or set to point to a directory that contains
