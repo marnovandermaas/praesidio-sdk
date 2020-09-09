@@ -1,3 +1,5 @@
+# Copyright 2020 Marno van der Maas
+
 # RISCV should either be unset, or set to point to a directory that contains
 # a toolchain install tree that was built via other means.
 RISCV ?= $(CURDIR)/toolchain
