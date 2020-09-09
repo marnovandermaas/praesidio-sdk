@@ -48,7 +48,7 @@ These are things that still need to be implemented:
 - Tags are currently the same throughout the system. We should implement a prototype of tag translation so that tags in the last-level cache can be compressed compared with those in the tag directory.
 
 ## License
-This repository is a combination of numerous sub-repositories, which all have different licenses. For example, riscv-gnu-toolchain, buildroot and Linux are all licensed under GPLv2; riscv-fesvr and riscv-pk under BSD; and praesidio-software under MIT.
+This repository is distributed under the MIT license, and it is a combination of numerous sub-repositories, which all have different licenses. For example, riscv-gnu-toolchain, buildroot and Linux are all licensed under GPLv2; riscv-fesvr and riscv-pk under BSD; and praesidio-software under MIT.
 
 ## Paper Results
 This section is dedicated to instructions on how to replicate the results of the paper title "Protecting Enclaves from Intra-Core Side-Channel Attacks through Physical Isolation."
