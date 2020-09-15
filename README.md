@@ -36,6 +36,8 @@ git checkout
 cd ..
 ```
 
+You may also need to repeat this for other failed checkouts such as `praesidio-software`.
+
 Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while.
 
 ## Booting Linux on Spike
