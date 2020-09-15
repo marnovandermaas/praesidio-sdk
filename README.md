@@ -29,7 +29,7 @@ git submodule update --recursive --init
 cd ..
 ```
 
-Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while.
+Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while. If you see an error related to a missing target for `olddefconfig`, you can safely run `make` again.
 
 ## Booting Linux on Spike
 
@@ -56,7 +56,6 @@ This section is dedicated to instructions on how to replicate the results of the
 
 ### Prerequisites
 Please make sure you have `python3` installed with the following packages: `csv tabulate matplotlib numpy statistics`.
-
 
 ### Ring Buffer
 To get the results in the figure with the caption "Ring buffer performance over shared pages between enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile," please run the following commands:
