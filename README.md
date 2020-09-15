@@ -29,7 +29,14 @@ git submodule update --recursive --init
 cd ..
 ```
 
-Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while. If you see an error related to a missing target for `olddefconfig`, you can safely run `make` again.
+It may also be the case that the `buildroot` folder is empty. You can fix this by:
+```bash
+cd buildroot
+git checkout
+cd ..
+```
+
+Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while.
 
 ## Booting Linux on Spike
 
