@@ -19,7 +19,7 @@ cd praesidio-sdk
 git submodule update --recursive --init
 ```
 
-This will take some time and require around 7 GiB of disk space. At the moment the submodule update might skip the `riscv-gnu-toolchain` if this is the case for you please execute the following commands:
+This will take some time and require around 7 GiB of disk space. At the moment the submodule update might skip the `riscv-gnu-toolchain` module. If this is the case for you, please execute the following commands:
 
 ```bash
 git clone https://github.com/riscv/riscv-gnu-toolchain.git
