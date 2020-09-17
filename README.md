@@ -5,9 +5,13 @@ This builds a complete RISC-V cross-compile toolchain for Praesidio enclave syst
 
 ## Tested Configurations
 
-### Ubuntu 18.04 x86_64 host
+### Ubuntu 18.04.5 x86_64 host
 
 - Build dependencies: `autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev libusb-1.0-0-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev device-tree-compiler pkg-config libexpat-dev python3-doit`
+
+### Ubuntu 20.04.1 x86_64 host
+
+- Build dependencies: `autoconf curl libmpc-dev libusb-1.0-0-dev build-essential bison flex texinfo gperf libtool patchutils zlib1g-dev device-tree-compiler pkg-config libexpat-dev python3-doit`
 
 ## Build Instructions
 
