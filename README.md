@@ -3,7 +3,7 @@
 
 This builds a complete RISC-V cross-compile toolchain for Praesidio enclave system, which physically isolated enclaves on secure cores that are separate from application cores. This skeleton repository is based on a previous version of the SiFive Freedom Unleashed SDK.
 
-## Tested Configurations
+## Build Dependencies
 
 ### Ubuntu 18.04.5 x86_64 host
 
@@ -32,15 +32,6 @@ git checkout b4dae89f85bf882852c6186b1284df11065bfcd9
 git submodule update --recursive --init
 cd ..
 ```
-
-It may also be the case that the `buildroot` folder is empty. You can fix this by:
-```bash
-cd buildroot
-git checkout
-cd ..
-```
-
-You may also need to repeat this for other failed checkouts such as `praesidio-software`.
 
 Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while.
 
