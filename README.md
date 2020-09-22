@@ -59,7 +59,7 @@ These are things that still need to be implemented:
 This repository is distributed under the MIT license, and it is a combination of numerous sub-repositories, which all have different licenses. For example, riscv-gnu-toolchain, buildroot and Linux are all licensed under GPLv2; riscv-fesvr and riscv-pk under BSD; and praesidio-software under MIT.
 
 ## Paper Results
-This section is dedicated to instructions on how to replicate the results of the paper title "Protecting Enclaves from Intra-Core Side-Channel Attacks through Physical Isolation."
+This section is dedicated to instructions on how to replicate the results of the paper title ["Protecting Enclaves from Intra-Core Side-Channel Attacks through Physical Isolation."](https://doi.org/10.1145/3411505.3418437) Make sure to use release `v1.0` if you would like to replicate our results accurately.
 
 ### Prerequisites
 Please make sure you have `python3` installed with the following packages: `csv tabulate matplotlib numpy statistics`.
