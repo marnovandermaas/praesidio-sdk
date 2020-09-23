@@ -35,7 +35,7 @@ cd ..
 
 Once the submodules are initialized, run `make` and the complete toolchain and bbl image will be built, which will take a while.
 
-On Ubuntu 20.04 you will encounter an error asking you to port `freadahead.c` and `fseeko.c` to your platform, this is because they updated in glibc. A current workaround is to make the changes in [this commit](https://github.com/coreutils/gnulib/commit/4af4a4a71827c0bc5e0ec67af23edef4f15cee8e) to `freadahead.c`, `fseeko.c` and `stdio-impl.h` in `./work/buildroot_initramfs/build/host-m4-1.4.17/lib/`. After making the changes running `make` again should be successful.
+On Ubuntu 20.04 you can encounter an error asking you to port `freadahead.c` and `fseeko.c` to your platform, this is because of updates in glibc. A current workaround is to make the changes from [this commit](https://github.com/coreutils/gnulib/commit/4af4a4a71827c0bc5e0ec67af23edef4f15cee8e) to `freadahead.c`, `fseeko.c` and `stdio-impl.h` in `./work/buildroot_initramfs/build/host-m4-1.4.17/lib/`. After making the changes running `make` again should be successful.
 
 ## Booting Linux on Spike
 
@@ -59,7 +59,7 @@ These are things that still need to be implemented:
 This repository is distributed under the MIT license, and it is a combination of numerous sub-repositories, which all have different licenses. For example, riscv-gnu-toolchain, buildroot and Linux are all licensed under GPLv2; riscv-fesvr and riscv-pk under BSD; and praesidio-software under MIT.
 
 ## Paper Results
-This section is dedicated to instructions on how to replicate the results of the paper title "Protecting Enclaves from Intra-Core Side-Channel Attacks through Physical Isolation."
+This section is dedicated to instructions on how to replicate the results of the paper title ["Protecting Enclaves from Intra-Core Side-Channel Attacks through Physical Isolation."](https://doi.org/10.1145/3411505.3418437) Make sure to use release `v1.0` if you would like to replicate our results accurately.
 
 ### Prerequisites
 Please make sure you have `python3` installed with the following packages: `csv tabulate matplotlib numpy statistics`.
