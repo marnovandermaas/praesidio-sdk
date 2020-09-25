@@ -364,7 +364,9 @@ elif ring_status:
     ax2.set_xlim((0, 4096))
     ax2.set_xticks(xticks)
     ax2.set_xticklabels(xticks, **llfont)
-    ax2.set_yticklabels(range(0, 300+1, 50), **llfont)
+    cache_yticks = range(0, 300+1, 50)
+    ax2.set_yticks(cache_yticks)
+    ax2.set_yticklabels(cache_yticks, **llfont)
     ax2.grid()
 
     pyplot.show()
