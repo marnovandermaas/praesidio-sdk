@@ -369,7 +369,10 @@ elif ring_status:
     ax2.set_yticklabels(cache_yticks, **llfont)
     ax2.grid()
 
-    pyplot.show()
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    #matplotlib.rc('pdf',use14corefonts= True);
+    matplotlib.rc('text', usetex=True);
+    pyplot.savefig("RingBuffer.pdf", format="pdf", metadata={'Author':'Marno van der Maas'})
 elif page_status:
     print(page_sendInstructions)
     print(numpy.percentile(page_sendInstructions, [25,50,75]))
