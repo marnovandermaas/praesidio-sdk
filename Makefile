@@ -190,6 +190,7 @@ $(spike): $(spike_srcdir) $(libfesvr)
 	cd $(spike_wrkdir) && $</configure \
 		--prefix=$(dir $(abspath $(dir $@))) \
 		--with-fesvr=$(dir $(abspath $(dir $(libfesvr)))) \
+		--enable-dirty \
 		--enable-misaligned #--enable-histogram
 	$(MAKE) -C $(spike_wrkdir)
 	$(MAKE) -C $(spike_wrkdir) install
