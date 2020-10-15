@@ -50,9 +50,9 @@ And to shutdown the system use the `halt` command.
 ## Future Features
 These are things that still need to be implemented:
 - The user API, Linux driver and management shim already have a way to request attestation, but we still need to implement the measurement of the shim and the enclave as well as signing these measurements.
-- Install a trap handler in the management shim, which handles scheduling and puts the enclave in an error state if it causes a trap.
-- Install a page table for enclaves, so that global variables can be used.
 - Tags are currently the same throughout the system. We should implement a prototype of tag translation so that tags in the last-level cache can be compressed compared with those in the tag directory.
+
+Note: see the enclave_virtmem branch for a system with a trap handler in the management shim and an installed page table for enclaves.
 
 ## License
 This repository is distributed under the MIT license, and it is a combination of numerous sub-repositories, which all have different licenses. For example, riscv-gnu-toolchain, buildroot and Linux are all licensed under GPLv2; riscv-fesvr and riscv-pk under BSD; and praesidio-software under MIT.
