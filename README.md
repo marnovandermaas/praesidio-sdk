@@ -52,7 +52,7 @@ These are things that still need to be implemented:
 - The user API, Linux driver and management shim already have a way to request attestation, but we still need to implement the measurement of the shim and the enclave as well as signing these measurements.
 - Tags are currently the same throughout the system. We should implement a prototype of tag translation so that tags in the last-level cache can be compressed compared with those in the tag directory.
 
-Note: see the enclave_virtmem branch for a system with a trap handler in the management shim and an installed page table for enclaves.
+Note: see the [enclave_virtmem branch](https://github.com/marnovandermaas/praesidio-sdk/tree/enclave_virtmem) for a system with a trap handler in the management shim and an installed page table for enclaves.
 
 ## License
 This repository is distributed under the MIT license, and it is a combination of numerous sub-repositories, which all have different licenses. For example, riscv-gnu-toolchain, buildroot and Linux are all licensed under GPLv2; riscv-fesvr and riscv-pk under BSD; and praesidio-software under MIT.
@@ -64,7 +64,7 @@ This section is dedicated to instructions on how to replicate the results of the
 Please make sure you have `python3` installed with the following packages: `csv tabulate matplotlib numpy statistics`.
 
 ### Ring Buffer
-To get the results in the figure with the caption "Ring buffer performance over shared pages between enclaves. Each packet size is sent 256 times and thegraph shows a line of the median value and error bars fromthe first quartile to the third quartile," please run the following commands:
+To get the results in the figure with the caption "Ring buffer performance over shared pages between enclaves. Each packet size is sent 256 times and the graph shows a line of the median value and error bars from the first quartile to the third quartile," please run the following commands:
 ```bash
 cd logs
 python3 process.py ring ring20200828.log
@@ -89,7 +89,7 @@ cd ..
 Both of these output the array of raw values and then an array of 3 elements; which are the first, second and third quartile used for the calculation in the paper.
 
 ### Enclave Creation
-To get the results in the table titled "Setup Cost for Creating Enclaves with Proportion ofthe Different Phases of the Process and the Total Cost," please run the following commands:
+To get the results in the table titled "Setup Cost for Creating Enclaves with Proportion of the Different Phases of the Process and the Total Cost," please run the following commands:
 ```bash
 cd logs
 python3 process.py hello hello20200825_*
